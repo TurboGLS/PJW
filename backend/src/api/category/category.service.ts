@@ -2,11 +2,16 @@ import { Category } from "./category.entity";
 import { CategoryModel } from "./category.model";
 
 export class categoryService {
+    constructor() {
+    }
+
+
+
     async getCategoryById(categoryId: string): Promise<Category | null> {
         const category = await CategoryModel.findById(categoryId); 
         return category ? category.toObject() : null;
     }
-    
+
     async getAllCategoryTypes(): Promise<string[]> {
         try {
             const categories = await CategoryModel.find({}).select('categoryType').lean();
