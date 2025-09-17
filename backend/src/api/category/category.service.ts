@@ -1,15 +1,7 @@
-import { UserIdentityModel } from "../../lib/auth/local/user-identity.model";
 import { Category } from "./category.entity";
 import { CategoryModel } from "./category.model";
-import * as bcrypt from 'bcrypt';
-
 
 export class categoryService {
-    constructor() {
-    }
-
-
-
     async getCategoryById(categoryId: string): Promise<Category | null> {
         const category = await CategoryModel.findById(categoryId); 
         return category ? category.toObject() : null;
