@@ -6,7 +6,7 @@ import { CategoryModel } from '../category/category.model'; // Importa il modell
 export class MovimentoContoService {
 
 
-    //  DA RIVEDERE 
+    //  da gestire in base a che tipo di movimento volgio eseguire 
     async createMovimentoConto(movimentoData: Omit<movimentoConto, '_id'>): Promise<movimentoConto> {
         try {
             // 1. Verifica l'esistenza del ContoCorrenteID
@@ -20,6 +20,10 @@ export class MovimentoContoService {
             if (!existingCategory) {
                 throw new Error(`CategoriaMovimento con ID ${movimentoData.categoriaMovimentoID} non trovata.`);
             }
+
+            const categoria = movimentoData.categoriaMovimentoID
+
+            
 
             // Se entrambi esistono, procedi con la creazione del movimento
             const newMovimento = await movimentoContoModel.create(movimentoData);
