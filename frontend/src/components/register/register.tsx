@@ -1,12 +1,33 @@
-import React from 'react'
-import s from './register.module.scss'
+import s from "./register.module.scss";
+import BankLogo from "../../assets/intesa-mario-volpato-trasparent.png";
 
 const register = () => {
   return (
     <div className={s["main-container"]}>
-      Register Works
+      <div className={s["main-container__register-container"]}>
+        <div className={s["main-container__register-container-left"]}>
+          <div className={s["main-container__register-container-infos"]}>
+            <h1>Sign-Up</h1>
+            <div className={s["register-button"]}>
+              Sei già registrato? Registrati
+              <hr></hr>
+            </div>
+          </div>
+          <div className={s["main-container__register-container-form"]}>
+            <input placeholder="Nome" />
+            <input placeholder="Cognome" />
+            <input placeholder="Email" />
+            <input placeholder="Password" />
+            <input placeholder="Ripeti Password" />
+            <button>Registrati</button>
+          </div>
+        </div>
+        <div className={s["main-container__register-container-right"]}>
+          <img src={BankLogo}></img>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default register
+export default register;
