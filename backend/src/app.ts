@@ -15,16 +15,16 @@ const allowedOrigins = [
 
 app.use(cors());
 
-app.use(cors({
-  origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  optionsSuccessStatus: 200
-}));
+//app.use(cors({
+  //origin: (origin, callback) => {
+    //if (!origin || allowedOrigins.includes(origin)) {
+      //callback(null, true);
+    //} else {
+      //callback(new Error('Not allowed by CORS'));
+    //}
+  //},
+  //optionsSuccessStatus: 200
+//}));
 
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
