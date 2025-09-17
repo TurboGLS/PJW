@@ -1,12 +1,11 @@
+import { Category } from "./category.entity";
 import { CategoryModel } from "./category.model";
 
 export class CategoryService {
-    async getAllCategoryNames(): Promise<string[]> {
+    async getAllCategoryNames(): Promise<Category[]> {
         try {
-            const categories = await CategoryModel.find({}).select('categoryName -_id').lean();
-
-            const categoryNames = categories.map(category => category.categoryName);
-            return categoryNames;
+            const categories = await CategoryModel.find({}).lean()
+            return categories;
         } catch (error) {
             console.error("Errore durante il recupero dei nomi di categoria:", error);
             throw error;
