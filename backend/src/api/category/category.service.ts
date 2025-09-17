@@ -1,27 +1,17 @@
-import { Category } from "./category.entity";
 import { CategoryModel } from "./category.model";
 
-export class categoryService {
-    constructor() {
-    }
-
-
-
-    async getCategoryById(categoryId: string): Promise<Category | null> {
-        const category = await CategoryModel.findById(categoryId); 
-        return category ? category.toObject() : null;
-    }
-
-    async getAllCategoryTypes(): Promise<string[]> {
+export class CategoryService {
+    async getAllCategoryNames(): Promise<string[]> {
         try {
-            const categories = await CategoryModel.find({}).select('categoryType').lean();
-            const categoryTypes = categories.map(category => category.categoryType);
-            return categoryTypes;
+            const categories = await CategoryModel.find({}).select('categoryName -_id').lean();
+
+            const categoryNames = categories.map(category => category.categoryName);
+            return categoryNames;
         } catch (error) {
-            console.error("Errore durante il recupero dei tipi di categoria:", error);
+            console.error("Errore durante il recupero dei nomi di categoria:", error);
             throw error;
         }
     }
 }
 
-export default new categoryService();
+export default new CategoryService();
