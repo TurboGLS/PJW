@@ -1,12 +1,13 @@
 import { model, Schema } from "mongoose";
 import { movimentoConto } from "./movimentoConto.entity";
 
+
 const movimentoContoSchema = new Schema<movimentoConto>({
-    contoCorrenteID: { type: String },
+    contoCorrenteID: { type: Schema.Types.ObjectId, ref: 'contoCorrenteModel', required: true  },
     data: { type: Date },
     importo: { type: Number },
     saldo: { type: Number },
-    categoriaMovimentoID: { type: String },
+    categoriaMovimentoID: { type: Schema.Types.ObjectId, ref: 'CategoryModel', required: true  },
     descrizioneEstesa: { type: String }
 });
 
@@ -28,5 +29,5 @@ movimentoContoSchema.set('toObject', {
     }
 });
 
-export const contoCorrenteModel = model<movimentoConto>('contoCorrente', movimentoContoSchema);
+export const movimentoContoModel = model<movimentoConto>('contoCorrente', movimentoContoSchema);
 
