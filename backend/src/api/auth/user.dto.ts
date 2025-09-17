@@ -8,7 +8,7 @@ export class AddUserDTO {
     lastName!: string;
 
     @IsEmail()
-    username!: string;
+    email!: string;
 
     @IsString()
     @IsStrongPassword({
