@@ -50,7 +50,7 @@ export const login = async (
                     return;
                 }
 
-                const { token, refreshToken } = await tokenSrv  .generateTokenPair(user.id);
+                const { token, refreshToken } = await tokenSrv.generateTokenPair(user.id);
 
                 res.status(200).json({
                     user,
