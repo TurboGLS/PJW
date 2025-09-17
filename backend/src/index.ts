@@ -1,5 +1,3 @@
-// import 'reflect-metadata';
-
 // usato per gestire tutte le variabili presenti nel file .env a livello globale quando parte il servizio
 import dotenv from 'dotenv';
 dotenv.config();
