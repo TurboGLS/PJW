@@ -1,7 +1,8 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
-import Homepage from './components/homepage/homepage'
 import Login from './components/login/login'
 import Register from './components/register/register'
+import Homepage from './components/homepage/Homepage'
+import "./App.scss"
 
 const router = createBrowserRouter([
   {
