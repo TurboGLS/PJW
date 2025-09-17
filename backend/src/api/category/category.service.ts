@@ -4,7 +4,7 @@ import { CategoryModel } from "./category.model";
 export class CategoryService {
     async getAllCategoryNames(): Promise<Category[]> {
         try {
-            const categories = await CategoryModel.find({}).lean()
+            const categories = await CategoryModel.find();
             return categories;
         } catch (error) {
             console.error("Errore durante il recupero dei nomi di categoria:", error);
