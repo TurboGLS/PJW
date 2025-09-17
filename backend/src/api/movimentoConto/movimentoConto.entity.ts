@@ -1,9 +1,11 @@
+import { ObjectId } from "mongoose";
+
 export type movimentoConto = {
     id?: string;			
-	contoCorrenteID: string;		 
+	contoCorrenteID: ObjectId;		 
 	data: Date;				
 	importo: number;	
 	saldo: number;				
-	categoriaMovimentoID: string;		
+	categoriaMovimentoID: ObjectId;		
 	descrizioneEstesa: string;
 }

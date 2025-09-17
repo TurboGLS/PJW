@@ -1,32 +1,16 @@
-import { model, Schema } from "mongoose";
-import { movimentoConto } from "./movimentoConto.entity";
+import { Router } from 'express';
+import { MovimentoContoController } from './movimentoConto.controller'; 
 
-const movimentoContoSchema = new Schema<movimentoConto>({
-    contoCorrenteID: { type: String },
-    data: { type: Date },
-    importo: { type: Number },
-    saldo: { type: Number },
-    categoriaMovimentoID: { type: String },
-    descrizioneEstesa: { type: String}
-});
+const movimentoContoController = new MovimentoContoController();
 
-movimentoContoSchema.set('toJSON', {
-    virtuals: true,
-    transform: (_, ret: any) => {
-        delete ret._id;
-        delete ret.__v;
-        return ret;
-    }
-});
 
-movimentoContoSchema.set('toObject', {
-    virtuals: true,
-    transform: (_, ret: any) => {
-        delete ret._id;
-        delete ret.__v;
-        return ret;
-    }
-});
+const router = Router();
 
-export const movimentoContoModel = model<movimentoConto>('movimentoConto', movimentoContoSchema);
+router.post('/', movimentoContoController.createMovimentoConto);
+router.get('/', movimentoContoController.getAllMovimentiConto);
+router.get('/limited', movimentoContoController.getLimitedMovimentiConto);
+router.get('/:id', movimentoContoController.getMovimentoContoById);
+router.get('/by-categoria/:categoriaId', movimentoContoController.getMovimentiByCategoria);
 
+
+export { router as movimentoContoRoutes };
