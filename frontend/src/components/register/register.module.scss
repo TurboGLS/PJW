@@ -1,18 +1,11 @@
-body {
+.main-container {
   background-image: url("https://www.milanodavedere.it/wp-content/uploads/2020/10/torre-solaria.jpg");
   background-repeat: no-repeat;
   background-size: cover;
-  backdrop-filter: blur(3px);
-  margin: 0;
-  padding: 0;
-}
-
-.main-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  font-family: "Quicksand", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;

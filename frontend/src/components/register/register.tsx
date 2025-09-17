@@ -1,5 +1,5 @@
 import s from "./register.module.scss";
-import BankLogo from "../../assets/banklogo.jpeg";
+import BankLogo from "../../assets/intesa-mario-volpato-trasparent.png";
 
 const register = () => {
   return (

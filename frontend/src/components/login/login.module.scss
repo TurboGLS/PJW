@@ -1,6 +1,88 @@
-.main-container{
+.main-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: blue;
+    flex-direction: column;
+    height: 100vh;
+    margin: auto;
+    background-image: url("../../assets/background-login.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(228,235,246);
+    padding: 70px 90px;
+    border-radius: 25px;
+}
+
+.login-area {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.main-title {
+    color: rgb(77,86,128);
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.register-button {
+    color: rgb(90, 90, 90);
+    margin-bottom: 25px;
+    transition: color 500ms;
+    user-select: none;
+}
+
+.register-button hr {
+    visibility: hidden;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgb(109, 120, 170);
+    max-width: 0px;
+    transition: max-width 500ms, visibility 1ms linear 500ms;
+}
+
+.register-button:hover {
+    color: rgb(109, 120, 170);
+    transition: all 500ms;
+}
+
+.register-button:hover hr {
+    max-width: 290px;
+    visibility: visible;
+    transition: max-width 500ms;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-button {
+    height: 40px;
+    border-radius: 20px;
+    border: 2px solid rgb(207, 207, 207);
+    padding-left: 12px;
+}
+
+.login-button {
+    height: 40px;
+    border-radius: 20px;
+    background-color: rgb(77,86,128);
+    color: white;
+    border: none;
+    font-size: 16px;
+}
+
+.image {
+    max-width: 400px;
+    object-fit: contain;
+    margin-left: 100px;
 }
