@@ -13,17 +13,19 @@ const allowedOrigins = [
   'http://localhost:4200',
 ]
 
-app.use(cors({
-  origin: (origin, callback) => {
+app.use(cors());
+
+//app.use(cors({
+//  origin: (origin, callback) => {
     // Permetti richieste da origine assente (es. Postman) o da quelle incluse
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  optionsSuccessStatus: 200
-}));
+  //  if (!origin || allowedOrigins.includes(origin)) {
+    //  callback(null, true);
+    //} else {
+      //callback(new Error('Not allowed by CORS'));
+    //}
+  //},
+  //optionsSuccessStatus: 200
+//}));
 
 app.use(morgan('tiny'));
 app.use(bodyParser.json());
