@@ -1,8 +1,8 @@
 // import 'reflect-metadata';
 
 // usato per gestire tutte le variabili presenti nel file .env a livello globale quando parte il servizio
-// import dotenv from 'dotenv';
-// dotenv.config();
+import dotenv from 'dotenv';
+dotenv.config();
 
 import app from './app';
 import mongoose from 'mongoose';
