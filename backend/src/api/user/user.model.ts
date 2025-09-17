@@ -6,6 +6,9 @@ const userSchema = new Schema<User>({
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String },
+    active: { type: Boolean, default: false},
+    verificationToken: { type: String },
+    verificationTokenExpires: { type: Date },
 });
 
 userSchema.set('toJSON', {
