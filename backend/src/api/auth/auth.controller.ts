@@ -15,8 +15,16 @@ export const add = async (
     next: NextFunction
 ) => {
     try {
-        const userData = omit(req.body, 'username', 'password') as User;
-        const credentialsData = pick(req.body, 'username', 'password');
+        const userData = {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email
+        } as User;
+
+        const credentialsData = {
+            username: req.body.email,
+            password: req.body.password
+        };
 
         const newUser = await userSrv.add(userData, credentialsData);
 
