@@ -1,9 +1,12 @@
+import React from 'react'
 import s from "./homepage.module.scss"
 
-const Homepage = () => {
+const homepage = () => {
   return (
-    <div className={s["main-container"]}>Homepage Works</div>
+    <div className={s["main-container"]}>
+      Homepage Works
+    </div>
   )
 }
 
-export default Homepage
+export default homepage
