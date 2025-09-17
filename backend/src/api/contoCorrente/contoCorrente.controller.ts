@@ -3,7 +3,7 @@ import { ContoCorrenteService } from './contoCorrente.service';
 
 const contoCorrenteService = new ContoCorrenteService();
 
-export class ContoCorrenteController {
+export class contoCorrenteController {
 
     public async createContoCorrente(req: Request, res: Response): Promise<void> {
         try {
