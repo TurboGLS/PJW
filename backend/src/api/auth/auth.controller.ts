@@ -8,6 +8,7 @@ import passport from "passport";
 import tokenSrv from "../../lib/auth/token.service";
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from "../../lib/auth/jwt/jwt-strategy";
+import { sendVerificationEmail } from "../verification/verification.service";
 
 export const add = async (
     req: TypedRequest<AddUserDTO>,
@@ -27,6 +28,12 @@ export const add = async (
         };
 
         const newUser = await userSrv.add(userData, credentialsData);
+
+        // Invio Email
+        const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${newUser.verificationToken}`;
+        await sendVerificationEmail(newUser.email, verifyUrl);
+
+        res.status(200).json({ message: "Registrazione completata. Controlla la tua email per attivare l'account." });
 
         res.status(200).json(newUser);
     } catch (err) {

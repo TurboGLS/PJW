@@ -4,4 +4,7 @@ export type User = {
     lastName: string;
     email: string;
     password: string;
+    active: boolean;
+    verificationToken?: string;
+    verificationTokenExpires?: Date;
 }
