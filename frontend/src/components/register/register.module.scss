@@ -7,7 +7,6 @@
   justify-content: center;
   min-height: 100vh;
   font-optical-sizing: auto;
-  font-weight: 700;
   font-style: normal;
 
   &__register-container {
@@ -27,7 +26,7 @@
     gap: 1rem;
 
     h1 {
-      color: rgb(83, 94, 140);
+      color: rgb(77, 86, 128);
       margin: 0;
     }
   }
@@ -38,15 +37,11 @@
     gap: 1rem;
 
     input {
-      padding: 0.7rem 2rem 0.7rem;
-      border-radius: 25px;
-      border-color: grey;
-      border-width: 0.5px;
-      border-style: solid;
-      font-family: "Quicksand", sans-serif;
-      font-optical-sizing: auto;
-      font-weight: 700;
-      font-style: normal;
+      height: 40px;
+      border-radius: 20px;
+      border: 2px solid rgb(207, 207, 207);
+      padding-left: 12px;
+      padding-right: 50px;
     }
     button {
       background-color: rgb(68, 83, 121);
@@ -55,7 +50,7 @@
       font-optical-sizing: auto;
       font-weight: 700;
       font-style: normal;
-      border-radius: 10px;
+      border-radius: 20px;
       padding: 0.5rem 3rem;
     }
   }
@@ -69,7 +64,7 @@
 
   &__register-container-right {
     img {
-      max-width: 500px;
+      max-width: 400px;
     }
   }
 }
