@@ -26,7 +26,7 @@ const register = () => {
         username,
         password
       );
-      console.log(user);
+      navigate("/login");
     } catch (e: any) {
       setError(e.response.data.message);
     }
@@ -75,7 +75,7 @@ const register = () => {
                 </button>
               </>
             ) : (
-              <button type="submit" onClick={redirectToLogin}>
+              <button type="submit" onSubmit={register}>
                 Sign In
               </button>
             )}
