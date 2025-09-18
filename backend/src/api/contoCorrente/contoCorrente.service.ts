@@ -34,7 +34,7 @@ export class ContoCorrenteService {
             const contoCorrente = await contoCorrenteModel.findOne({ email: email });
             return contoCorrente ? contoCorrente.toJSON() as contoCorrente : null;
         } catch (error: any) {
-            console.error(`[Service] Errore nel recupero del conto corrente con ID ${email}:`, error);
+            console.error(`[Service] Errore nel recupero del conto corrente con email: ${email}:`, error);
             throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);
         }
     }
