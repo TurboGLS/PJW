@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { MovimentoContoService } from './movimentoConto.service'; // Assicurati che il percorso sia corretto
 import { movimentoContoModel } from './movimentoConto.model'; // Assicurati che il percorso sia corretto e che MovimentoConto sia l'interfaccia
 import { movimentoConto } from './movimentoConto.entity';
+import mongoose from 'mongoose';
 
 
 const movimentoContoService = new MovimentoContoService();
@@ -12,8 +13,8 @@ export class MovimentoContoController {
     public async createMovimentoConto(req: Request, res: Response): Promise<void> {
         try {
             const movimentoData: Omit<movimentoConto, '_id'> = req.body;
-
             const newMovimento = await movimentoContoService.createMovimentoConto(movimentoData);
+
 
             res.status(201).json(newMovimento);
         } catch (error: any) {
@@ -42,7 +43,7 @@ export class MovimentoContoController {
     public async getAllMovimentiConto(req: Request, res: Response): Promise<void> {
         try {
             const movimenti = await movimentoContoService.getAllMovimentiConto();
-            // Restituisce tutti i movimenti con status 200 OK
+            
             res.status(200).json(movimenti);
         } catch (error: any) {
             console.error("Errore nel controller getAllMovimentiConto:", error.message);

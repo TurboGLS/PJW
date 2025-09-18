@@ -12,8 +12,8 @@ const login = () => {
   const { login } = useAuth()
   
   const redirectToRegister = () => {
-    navigate("/register")
-  }
+    navigate("/register");
+  };
 
   const handleLogin = async (e: any) => {
     e.preventDefault()
@@ -21,18 +21,16 @@ const login = () => {
       await login(username, password)
       navigate("/homepage")
     } catch (e: any) {
-      setError(e.response.data.message)
+      setError(e.response.data.message);
       // TODO : Error notification
     }
-  }
+  };
 
   return (
     <div className={s["main-container"]}>
       <div className={s["login-container"]}>
         <div className={s["login-area"]}>
-          <div className={s["main-title"]}>
-            Login
-          </div>
+          <div className={s["main-title"]}>Login</div>
           <div className={s["register-button"]} onClick={redirectToRegister}>
             If you don't have an account, Click here
             <hr></hr>
@@ -46,7 +44,7 @@ const login = () => {
         <img className={s["image"]} src={logo} alt="Logo"></img>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default login
+export default login;

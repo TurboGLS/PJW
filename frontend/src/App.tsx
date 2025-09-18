@@ -12,15 +12,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/home" replace />
+        element: <Navigate to="/home" replace />,
       },
       {
         path: "/login",
-        element: <Login />
+        element: <Login />,
       },
       {
         path: "/register",
-        element: <Register />
+        element: <Register />,
       },
       {
         path: "/homepage",
@@ -30,10 +30,9 @@ const router = createBrowserRouter([
           </AuthGuard>
         )
       },
-    ]
-  }
-])
-
+    ],
+  },
+]);
 
 function App(){
   return(

@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, models, Model } from "mongoose"; // Aggiunto 'models' e 'Model'
 import { movimentoConto } from "./movimentoConto.entity";
 
 
@@ -29,5 +29,7 @@ movimentoContoSchema.set('toObject', {
     }
 });
 
-export const movimentoContoModel = model<movimentoConto>('contoCorrente', movimentoContoSchema);
-
+// === LA MODIFICA È QUI ===
+// Controlla se il modello 'contoCorrente' esiste già nel registro di Mongoose.
+// Se esiste, lo riutilizza; altrimenti, lo definisce.
+export const movimentoContoModel: Model<movimentoConto> = models.contoCorrente || model<movimentoConto>('contoCorrente', movimentoContoSchema);
