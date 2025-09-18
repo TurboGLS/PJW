@@ -1,4 +1,5 @@
-import type { User } from "../models/user-model";
+import type { User } from "../../entities/user.entity";
+
 
 interface ProfileInfosProps {
   user: User;

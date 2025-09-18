@@ -1,12 +1,10 @@
 import s from "./register.module.scss";
 import BankLogo from "../../assets/intesa-mario-volpato-trasparent.png";
-import UserService from "../../services/user.service";
+import authService from "../../services/auth.service";
 import { useNavigate } from "react-router";
 import { useState } from "react";
 
 const register = () => {
-  const userSrv = new UserService();
-
   const navigate = useNavigate();
   const [name, setName] = useState<String>("");
   const [surname, setSurname] = useState<String>("");
@@ -22,7 +20,12 @@ const register = () => {
   const register = async (e: any) => {
     e.preventDefault();
     try {
-      const user = await userSrv.register(name, surname, username, password);
+      const user = await authService.register(
+        name,
+        surname,
+        username,
+        password
+      );
       console.log(user);
     } catch (e: any) {
       setError(e.response.data.message);

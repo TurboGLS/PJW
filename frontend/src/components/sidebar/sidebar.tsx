@@ -1,25 +1,21 @@
 import { useEffect, useState } from "react";
-import UserService from "../../services/user.service";
 import ProfileInfos from "../profile-infos/profile-infos";
 import s from "./sidebar.module.scss";
+import authService from "../../services/auth.service";
+import type { User } from "../../entities/user.entity";
 
 const Sidebar = () => {
-  const [user, setUser] = useState(null);
-  const userSrv = new UserService();
+  const [user, setUser] = useState<User | null>();
 
   const fetchUser = async () => {
-    try {
-      const user = await userSrv.user();
-      setUser(user.data);
-      return user;
-    } catch (error) {
-      console.log(error);
-    }
+    const response = await authService.fetchUser();
+    setUser(response);
+    return response;
   };
 
   useEffect(() => {
     fetchUser();
-  }, [user]);
+  }, []);
 
   if (!user) {
     return;
