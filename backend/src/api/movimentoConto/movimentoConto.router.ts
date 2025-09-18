@@ -13,4 +13,4 @@ router.get('/:id', movimentoContoController.getMovimentoContoById);
 router.get('/by-categoria/:categoriaId', movimentoContoController.getMovimentiByCategoria);
 
 
-export { router as movimentoContoRoutes };
+export default router;

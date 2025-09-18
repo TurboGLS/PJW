@@ -13,10 +13,6 @@ export class MovimentoContoController {
     public async createMovimentoConto(req: Request, res: Response): Promise<void> {
         try {
             const movimentoData: Omit<movimentoConto, '_id'> = req.body;
-            const tipoMovimentoID: Omit<movimentoConto, 'categoriaMovimentoID'> = req.body;
-
-            //  qui 
-
             const newMovimento = await movimentoContoService.createMovimentoConto(movimentoData);
 
 
