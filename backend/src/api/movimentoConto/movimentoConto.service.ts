@@ -5,8 +5,6 @@ import { CategoryModel } from '../category/category.model'; // Importa il modell
 import mongoose from 'mongoose';
 
 export class MovimentoContoService {
-
-
     //  da gestire in base a che tipo di movimento volgio eseguire 
     async createMovimentoConto(movimentoData: movimentoConto): Promise<movimentoConto> {
         try {
@@ -28,11 +26,6 @@ export class MovimentoContoService {
 
             // Usa l'ID del conto corrente come stringa per la ricerca dell'ultima operazione
             const movContoLastOp = await this.getLastOperationByContoId(movimentoData.contoCorrenteID);
-
-            // Apertura conto come uscita
-            if (categoryName === "Apertura Conto" && categoryType === "Uscita") {
-                
-            }
 
             // Bonifico ricevuto
             if (categoryName === "Bonifico" && categoryType === "Entrata") {
@@ -159,4 +152,34 @@ export class MovimentoContoService {
         }
     }
 
+    // Funzione Apertura Conto
+    async aperturaConto(contoCorrenteId: mongoose.ObjectId, importoIniziale = 0) {
+        const contoCorrente = await contoCorrenteModel.findById(contoCorrenteId);
+
+        if (!contoCorrente) {
+            throw new Error ('Nessun conto corrente trovato');
+        }
+
+        let categoria = await CategoryModel.findOne({ categoryName: 'Apertura Conto' });
+
+        if (!categoria) {
+            throw new Error ('Categoria non trovata.');
+        }
+
+        // Creaiamo il movimento
+        const movimentoIniziale = {
+            contoCorrenteID: contoCorrente._id,
+            data: new Date(),
+            importo: importoIniziale,
+            saldo: importoIniziale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'Apertura del Conto Corrente'
+        }
+
+        const newMovimento = await movimentoContoModel.create(movimentoIniziale);
+
+        return newMovimento;
+    }
 }
+
+export default new MovimentoContoService;

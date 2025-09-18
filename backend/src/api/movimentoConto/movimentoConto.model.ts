@@ -29,7 +29,4 @@ movimentoContoSchema.set('toObject', {
     }
 });
 
-// === LA MODIFICA È QUI ===
-// Controlla se il modello 'contoCorrente' esiste già nel registro di Mongoose.
-// Se esiste, lo riutilizza; altrimenti, lo definisce.
-export const movimentoContoModel: Model<movimentoConto> = models.contoCorrente || model<movimentoConto>('contoCorrente', movimentoContoSchema);
+export const movimentoContoModel = model<movimentoConto>('movimentoConto', movimentoContoSchema);

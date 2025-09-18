@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from "../../lib/auth/jwt/jwt-strategy";
 import { sendVerificationEmail } from "../verification/verification.service";
 import contoSrv from '../contoCorrente/contoCorrente.service';
+import movimentoContoSrv from '../movimentoConto/movimentoConto.service';
 
 export const add = async (
     req: TypedRequest<AddUserDTO>,
@@ -51,10 +52,21 @@ export const add = async (
 
         const newConto = await contoSrv.addContoCorrente(newContoData);
 
+        const contoCorrenteId = newConto.id;
+
+        if (!contoCorrenteId) {
+            res.status(404).json({ message: 'Conto Corrente Id non trovato' });
+            return;
+        }
+
+        const mongoose = require('mongoose');
+        const newMovimentoAperturaConto = await movimentoContoSrv.aperturaConto(new mongoose.Types.ObjectId(contoCorrenteId))
+
         res.status(201).json({ 
             message: "Registrazione completata. Controlla la tua email per attivare l'account.",
             user: newUser,
-            contoCorrente: newConto
+            contoCorrente: newConto,
+            movimentoContoCorrente: newMovimentoAperturaConto
         });
     } catch (err) {
         if (err instanceof EmailExistsError || err instanceof MissingCredentialsError) {

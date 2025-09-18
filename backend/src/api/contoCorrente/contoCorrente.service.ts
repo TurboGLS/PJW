@@ -2,6 +2,7 @@ import { contoCorrenteModel } from './contoCorrente.model';
 import { contoCorrente } from './contoCorrente.entity';
 
 export class ContoCorrenteService {
+
     public async addContoCorrente(contoCorrenteData: Omit<contoCorrente, 'id'>): Promise<contoCorrente> {
         try {
             const newContoCorrente = new contoCorrenteModel(contoCorrenteData);

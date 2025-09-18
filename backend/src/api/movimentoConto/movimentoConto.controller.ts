@@ -1,14 +1,14 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { MovimentoContoService } from './movimentoConto.service'; // Assicurati che il percorso sia corretto
 import { movimentoContoModel } from './movimentoConto.model'; // Assicurati che il percorso sia corretto e che MovimentoConto sia l'interfaccia
 import { movimentoConto } from './movimentoConto.entity';
 import mongoose from 'mongoose';
+import ContoCorrenteSrv from '../contoCorrente/contoCorrente.service';
 
 
 const movimentoContoService = new MovimentoContoService();
 
 export class MovimentoContoController {
-
     // da gestire in base a che tipo di movimento bisogna eseguire 
     public async createMovimentoConto(req: Request, res: Response): Promise<void> {
         try {
