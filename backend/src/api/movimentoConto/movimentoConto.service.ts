@@ -22,47 +22,47 @@ export class MovimentoContoService {
             if (!category) {
                 throw new Error(`CategoriaMovimento con ID ${movimentoData.categoriaMovimentoID} non trovata.`);
             }
-
-            /*
-
-            // soluzione con il populate che non so perche non funziona :(
-
-            const categoryName = await movimentoContoModel.find({ categoriaMovimentoID: category })
-                                                      .populate('categoryName')
-
-            const categoryType = await movimentoContoModel.find({ categoriaMovimentoID: category })
-                                                      .populate('categoryType')
-            */
-
+            
             const categoryName = category.categoryName;
             const categoryType = category.categoryType;
-                        
+
             // Usa l'ID del conto corrente come stringa per la ricerca dell'ultima operazione
             const movContoLastOp = await this.getLastOperationByContoId(movimentoData.contoCorrenteID);
-            
-            if (categoryName === "Bonifico" && categoryType === "Entrata") {
-                // Bonifico ricevuto
+
+            // Apertura conto come uscita
+            if (categoryName === "Apertura Conto" && categoryType === "Uscita") {
+                
             }
+
+            // Bonifico ricevuto
+            if (categoryName === "Bonifico" && categoryType === "Entrata") {
+
+            }
+
+            // Bonifico inviato
             if (categoryName === "Bonifico" && categoryType === "Uscita") {
-                // Bonifico inviato
+
             }
 
             // Prelievo contanti come uscita
             if (categoryName === "Prelievo Contanti" && categoryType === "Uscita") {
-            }
 
+            }
+            
+            // Pagamento utenze come uscita
             if (categoryName === "Pagamento Utenze" && categoryType === "Uscita") {
-                // Pagamento utenze come uscita
-            }
 
+            }
+            
+            // Ricarica effettuata
             if (categoryName === "Ricarica" && categoryType === "Uscita") {
-                // Ricarica effettuata
+
             }
 
+            // Versamento bancomat come entrata
             if (categoryName === "Versamento Bancomat" && categoryType === "Entrata") {
-                // Versamento bancomat come entrata
-            }
 
+            }
 
             // Se entrambi esistono, procedi con la creazione del movimento
             const newMovimento = await movimentoContoModel.create(movimentoData);
@@ -70,16 +70,17 @@ export class MovimentoContoService {
 
         } catch (error) {
             console.error("Errore durante la creazione del movimento conto:", error);
-            throw error; 
+            throw error;
         }
     }
 
+    // trova informazioni per un movimento id
     async getMovimentoContoById(id: string): Promise<movimentoConto | null> {
         try {
             const movimento = await movimentoContoModel.findById(id)
-                                                      .populate('contoCorrenteID')
-                                                      .populate('categoriaMovimentoID')
-                                                      .lean();
+                .populate('contoCorrenteID')
+                .populate('categoriaMovimentoID')
+                .lean();
             return movimento;
         } catch (error: any) {
             console.error(`Errore durante il recupero del movimento conto con ID ${id}:`, error.message);
@@ -87,13 +88,14 @@ export class MovimentoContoService {
         }
     }
 
+    // prende tutti i movimenti del conto
     async getAllMovimentiConto(): Promise<movimentoConto[]> {
         try {
             const movimenti = await movimentoContoModel.find({})
-                                                      .populate('contoCorrenteID')
-                                                      .populate('categoriaMovimentoID')
-                                                      .sort({ data: -1 }) // <--- Qui ordini per data in ordine decrescente
-                                                      .lean();
+                .populate('contoCorrenteID')
+                .populate('categoriaMovimentoID')
+                .sort({ data: -1 }) // <--- Qui ordini per data in ordine decrescente
+                .lean();
             return movimenti;
         } catch (error: any) {
             console.error("Errore durante il recupero di tutti i movimenti conto:", error.message);
@@ -101,6 +103,7 @@ export class MovimentoContoService {
         }
     }
 
+    // trova le operazioni limitate dal numero inserito
     async getLimitedMovimentiConto(limit: number): Promise<movimentoConto[]> {
         try {
             // Assicurati che il limite sia un numero positivo
@@ -109,11 +112,11 @@ export class MovimentoContoService {
             }
 
             const movimenti = await movimentoContoModel.find({})
-                                                      .populate('contoCorrenteID')
-                                                      .populate('categoriaMovimentoID')
-                                                      .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
-                                                      .limit(limit)       // <--- Qui applichiamo il limite
-                                                      .lean();
+                .populate('contoCorrenteID')
+                .populate('categoriaMovimentoID')
+                .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
+                .limit(limit)       // <--- Qui applichiamo il limite
+                .lean();
             return movimenti;
         } catch (error: any) {
             console.error(`Errore durante il recupero di ${limit} movimenti conto:`, error.message);
@@ -121,13 +124,14 @@ export class MovimentoContoService {
         }
     }
 
+    // Questo trova tutti i movimenti in base alla categoria
     async getMovimentiByCategoria(categoriaId: string): Promise<movimentoConto[]> {
         try {
             const movimenti = await movimentoContoModel.find({ categoriaMovimentoID: categoriaId }) // <--- Filtra per categoriaMovimentoID
-                                                      .populate('contoCorrenteID')
-                                                      .populate('categoriaMovimentoID')
-                                                      .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
-                                                      .lean();
+                .populate('contoCorrenteID')
+                .populate('categoriaMovimentoID')
+                .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
+                .lean();
             return movimenti;
         } catch (error: any) {
             console.error(`Errore durante il recupero dei movimenti per categoria ${categoriaId}:`, error.message);
@@ -135,6 +139,7 @@ export class MovimentoContoService {
         }
     }
 
+    // trova l'ultimo movimento di un certo conto corrente
     async getLastOperationByContoId(contoCorrenteId: mongoose.ObjectId): Promise<movimentoConto | null> {
         try {
             if (!contoCorrenteId) {
