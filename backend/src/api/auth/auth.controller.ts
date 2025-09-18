@@ -9,6 +9,7 @@ import tokenSrv from "../../lib/auth/token.service";
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from "../../lib/auth/jwt/jwt-strategy";
 import { sendVerificationEmail } from "../verification/verification.service";
+import contoSrv from '../contoCorrente/contoCorrente.service';
 
 export const add = async (
     req: TypedRequest<AddUserDTO>,
@@ -33,9 +34,28 @@ export const add = async (
         const verifyUrl = `${process.env.FRONTEND_URL}/verify-email?token=${newUser.verificationToken}`;
         await sendVerificationEmail(newUser.email, verifyUrl);
 
-        res.status(200).json({ message: "Registrazione completata. Controlla la tua email per attivare l'account." });
+        // apertura conto corrente
+        const aperturaDate = new Date();
 
-        res.status(200).json(newUser);
+        // Generazione conto corrente automatico
+        const randomIban = "IT" + Math.floor(Math.random() * 1_000_000_000_000_0000);
+
+        const newContoData = {
+            email: newUser.email,
+            password: newUser.password,
+            cognomeTitolare: newUser.lastName,
+            nomeTitolare: newUser.firstName,
+            dataApertura: aperturaDate,
+            iban: randomIban
+        }
+
+        const newConto = await contoSrv.addContoCorrente(newContoData);
+
+        res.status(201).json({ 
+            message: "Registrazione completata. Controlla la tua email per attivare l'account.",
+            user: newUser,
+            contoCorrente: newConto
+        });
     } catch (err) {
         if (err instanceof EmailExistsError || err instanceof MissingCredentialsError) {
             res.status(400).json({ err: err.name, message: err.message });
@@ -60,7 +80,7 @@ export const login = async (
                 if (!user) {
                     res.status(401).json({
                         error: 'LoginError',
-                        message: info.message
+                        message: info?.message || 'Credenziali non valide'
                     });
                     return;
                 }

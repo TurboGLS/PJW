@@ -2,7 +2,6 @@ import { contoCorrenteModel } from './contoCorrente.model';
 import { contoCorrente } from './contoCorrente.entity';
 
 export class ContoCorrenteService {
-
     public async addContoCorrente(contoCorrenteData: Omit<contoCorrente, 'id'>): Promise<contoCorrente> {
         try {
             const newContoCorrente = new contoCorrenteModel(contoCorrenteData);
@@ -19,7 +18,6 @@ export class ContoCorrenteService {
         }
     }
 
-
     public async getContoCorrenteById(id: string): Promise<contoCorrente | null> {
         try {
             const contoCorrente = await contoCorrenteModel.findById(id);
@@ -30,3 +28,5 @@ export class ContoCorrenteService {
         }
     }
 }
+
+export default new ContoCorrenteService;
