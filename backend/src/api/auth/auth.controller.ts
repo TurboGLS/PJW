@@ -71,6 +71,7 @@ export const add = async (
     } catch (err) {
         if (err instanceof EmailExistsError || err instanceof MissingCredentialsError) {
             res.status(400).json({ err: err.name, message: err.message });
+            return;
         }
         next(err);
     }
