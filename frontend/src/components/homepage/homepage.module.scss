@@ -1,6 +1,13 @@
-.main-container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: red;
+.main-container {
+  display: flex;
+  min-height: 100vh;
+
+  &__home {
+    background-color: blue;
+    min-height: 100vh;
+  }
+
+  &__sidebar-container {
+    max-width: 40vw;
+  }
 }
