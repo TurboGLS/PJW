@@ -5,68 +5,6 @@ import { CategoryModel } from '../category/category.model'; // Importa il modell
 import mongoose from 'mongoose';
 
 export class MovimentoContoService {
-    //  da gestire in base a che tipo di movimento volgio eseguire 
-    async createMovimentoConto(movimentoData: movimentoConto): Promise<movimentoConto> {
-        try {
-            // 1. Verifica l'esistenza del ContoCorrenteID
-            const existingContoCorrente = await contoCorrenteModel.findById(movimentoData.contoCorrenteID);
-
-            if (!existingContoCorrente) {
-                throw new Error(`ContoCorrente con ID ${movimentoData.contoCorrenteID} non trovato.`);
-            }
-
-            // 2. Verifica l'esistenza del CategoriaMovimentoID
-            const category = await CategoryModel.findById(movimentoData.categoriaMovimentoID);
-            if (!category) {
-                throw new Error(`CategoriaMovimento con ID ${movimentoData.categoriaMovimentoID} non trovata.`);
-            }
-            
-            const categoryName = category.categoryName;
-            const categoryType = category.categoryType;
-
-            // Usa l'ID del conto corrente come stringa per la ricerca dell'ultima operazione
-            const movContoLastOp = await this.getLastOperationByContoId(movimentoData.contoCorrenteID);
-
-            // Bonifico ricevuto
-            if (categoryName === "Bonifico" && categoryType === "Entrata") {
-
-            }
-
-            // Bonifico inviato
-            if (categoryName === "Bonifico" && categoryType === "Uscita") {
-
-            }
-
-            // Prelievo contanti come uscita
-            if (categoryName === "Prelievo Contanti" && categoryType === "Uscita") {
-
-            }
-            
-            // Pagamento utenze come uscita
-            if (categoryName === "Pagamento Utenze" && categoryType === "Uscita") {
-
-            }
-            
-            // Ricarica effettuata
-            if (categoryName === "Ricarica" && categoryType === "Uscita") {
-
-            }
-
-            // Versamento bancomat come entrata
-            if (categoryName === "Versamento Bancomat" && categoryType === "Entrata") {
-
-            }
-
-            // Se entrambi esistono, procedi con la creazione del movimento
-            const newMovimento = await movimentoContoModel.create(movimentoData);
-            return newMovimento;
-
-        } catch (error) {
-            console.error("Errore durante la creazione del movimento conto:", error);
-            throw error;
-        }
-    }
-
     // trova informazioni per un movimento id
     async getMovimentoContoById(id: string): Promise<movimentoConto | null> {
         try {
@@ -133,7 +71,7 @@ export class MovimentoContoService {
     }
 
     // trova l'ultimo movimento di un certo conto corrente
-    async getLastOperationByContoId(contoCorrenteId: mongoose.ObjectId): Promise<movimentoConto | null> {
+    async getLastOperationByContoId(contoCorrenteId: mongoose.ObjectId | string): Promise<movimentoConto | null> {
         try {
             if (!contoCorrenteId) {
                 throw new Error("È necessario fornire un contoCorrenteId valido.");
@@ -181,38 +119,57 @@ export class MovimentoContoService {
         return newMovimento;
     }
 
-    async bonificoEntrata(movimentoData: movimentoConto){
+    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto){
 
-        const saldoDisponibile = movimentoData.saldo;  
-        const importoSelezionato = movimentoData.importo;      
+        const saldoDisponibile = movimentoDataMittente.saldo;  
+        const saldoDestinatario = movimentoDataDestinatario.saldo;
+        const importoSelezionato = movimentoDataMittente.importo;      
 
         if(importoSelezionato>saldoDisponibile){
             throw new Error ('Saldo del utente insubbiciente')
         }
 
-        const saldoFinale = saldoDisponibile - importoSelezionato;
+        const saldoFinaleMittente = saldoDisponibile - importoSelezionato;
+        const saldoFinaleDestinatario = saldoDestinatario + importoSelezionato;
 
-        let categoria = await CategoryModel.findOne({ categoryName: 'Bonifico', categoryType : 'Uscita'});
+        let categoriaUscita = await CategoryModel.findOne({ categoryName: 'Bonifico', categoryType : 'Uscita'});
+        let categoriaEntrata = await CategoryModel.findOne({ categoryName: 'Bonifico', categoryType : 'Entrata'});
 
-        if (!categoria){
+        if (!categoriaUscita){
             throw new Error ('categoria non trovata');
         }
-        const movimentoBonifico = {
-            contoCorrenteID: movimentoData.id,
+
+        if (!categoriaEntrata){
+            throw new Error ('categoria non trovata');
+        }
+        const movimentoBonificoMittente = {
+            contoCorrenteID: movimentoDataMittente.id,
             data: new Date(),
             importo: importoSelezionato,
-            saldo: saldoFinale,
-            categoriaMovimentoID: categoria._id,
+            saldo: saldoFinaleMittente,
+            categoriaMovimentoID: categoriaUscita._id,
             descrizioneEstesa: 'Bonifico in uscita'
         }
-        const newMovimento = await movimentoContoModel.create(movimentoBonifico);
+        const movimentoBonificoDestinatario = {
+            contoCorrenteID: movimentoDataDestinatario.id,
+            data: new Date(),
+            importo: importoSelezionato,
+            saldo: saldoFinaleDestinatario,
+            categoriaMovimentoID: categoriaEntrata._id,
+            descrizioneEstesa: 'Bonifico in entrata'
+        }
+
+
+        const newMovimentoUscita = await movimentoContoModel.create(movimentoBonificoMittente);
+        const newMovimentoEntrata = await movimentoContoModel.create(movimentoBonificoDestinatario);
         
-        if(!newMovimento){
-            throw new Error ("errore nel inserimento del movimento")
+        if(!newMovimentoUscita){
+            throw new Error ("errore nella creazione del movimento uscita")
+        }
+        if(!newMovimentoEntrata){
+            throw new Error ("errore nella creazione del movimento entrata")
         }
         
-        return newMovimento
+        return true
     }
 }
-
-export default new MovimentoContoService;

@@ -1,5 +1,7 @@
 import { contoCorrenteModel } from './contoCorrente.model';
 import { contoCorrente } from './contoCorrente.entity';
+import { movimentoContoModel } from '../movimentoConto/movimentoConto.model';
+import { movimentoConto } from '../movimentoConto/movimentoConto.entity';
 
 export class ContoCorrenteService {
 
@@ -19,10 +21,10 @@ export class ContoCorrenteService {
         }
     }
 
-    public async getContoCorrenteById(id: string): Promise<contoCorrente | null> {
+    public async getContoCorrenteById(id: string): Promise<movimentoConto | null> {
         try {
-            const contoCorrente = await contoCorrenteModel.findById(id);
-            return contoCorrente ? contoCorrente.toJSON() as contoCorrente : null;
+            const movimentoConto = await movimentoContoModel.findById(id);
+            return movimentoConto ? movimentoConto.toJSON() as movimentoConto : null;
         } catch (error: any) {
             console.error(`[Service] Errore nel recupero del conto corrente con ID ${id}:`, error);
             throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);
@@ -34,7 +36,17 @@ export class ContoCorrenteService {
             const contoCorrente = await contoCorrenteModel.findOne({ email: email });
             return contoCorrente ? contoCorrente.toJSON() as contoCorrente : null;
         } catch (error: any) {
-            console.error(`[Service] Errore nel recupero del conto corrente con ID ${email}:`, error);
+            console.error(`[Service] Errore nel recupero del conto corrente con email ${email}:`, error);
+            throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);
+        }
+    }
+
+    public async getContoCorrenteByIban(iban: string): Promise<contoCorrente | null> {
+        try {
+            const contoCorrente = await contoCorrenteModel.findOne({ iban: iban });
+            return contoCorrente ? contoCorrente.toJSON() as contoCorrente : null;
+        } catch (error: any) {
+            console.error(`[Service] Errore nel recupero del conto corrente con iban ${iban}:`, error);
             throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);
         }
     }

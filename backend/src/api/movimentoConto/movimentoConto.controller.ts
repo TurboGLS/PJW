@@ -9,21 +9,6 @@ import ContoCorrenteSrv from '../contoCorrente/contoCorrente.service';
 const movimentoContoService = new MovimentoContoService();
 
 export class MovimentoContoController {
-    // da gestire in base a che tipo di movimento bisogna eseguire 
-    public async createMovimentoConto(req: Request, res: Response): Promise<void> {
-        try {
-            const movimentoData: Omit<movimentoConto, '_id'> = req.body;
-            const newMovimento = await movimentoContoService.createMovimentoConto(movimentoData);
-
-
-            res.status(201).json(newMovimento);
-        } catch (error: any) {
-            console.error("Errore nel controller createMovimentoConto:", error.message);
-            res.status(400).json({ message: error.message });
-        }
-    }
-
-   
     public async getMovimentoContoById(req: Request, res: Response): Promise<void> {
         try {
             const { id } = req.params; 
@@ -39,6 +24,7 @@ export class MovimentoContoController {
             res.status(500).json({ message: "Errore durante il recupero del movimento conto.", error: error.message });
         }
     }
+
 
     public async getAllMovimentiConto(req: Request, res: Response): Promise<void> {
         try {
@@ -84,4 +70,63 @@ export class MovimentoContoController {
             res.status(500).json({ message: "Errore durante il recupero dei movimenti per categoria.", error: error.message });
         }
     }
+
+    public async postBonificoUscita(req: Request, res: Response, next: NextFunction) {
+        try{
+            const email = req.user?.email;
+            const {ibanDestinatario, importo} = req.body;
+
+            if(!ibanDestinatario){
+                throw new Error("Iban non inserito")
+            }
+
+            if(!importo){
+                throw new Error("importo non inserito")
+            }
+
+            if (!email) {
+                throw new Error ("Email non trovata")
+            }
+
+            const contoCorrenteMittente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
+            const contoCorrenteDestinatario = await ContoCorrenteSrv.getContoCorrenteByIban(ibanDestinatario);
+
+            if (!contoCorrenteMittente) {
+                throw new Error("Conto corrente mittente non trovato per l'email specificata");
+            }
+
+            if (!contoCorrenteMittente.id) {
+                throw new Error("Conto correnteID non trovato");
+            }
+            if (!contoCorrenteDestinatario) {
+                throw new Error("Conto corrente destinatario non trovato per l'email specificata");
+            }
+
+            if (!contoCorrenteDestinatario.id) {
+                throw new Error("Conto correnteID non trovato");
+            }
+
+            const lastMovimentoMittente = await movimentoContoService.getLastOperationByContoId(contoCorrenteMittente.id);
+            const lastMovimentoDestinatario = await movimentoContoService.getLastOperationByContoId(contoCorrenteDestinatario.id);
+
+            if (!lastMovimentoMittente) {
+                throw new Error("ultimo Movimento non trovato");
+            }
+            if (!lastMovimentoDestinatario) {
+                throw new Error("ultimo Movimento non trovato");
+            }
+
+            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario);
+
+            if (!newMovimento) {
+                throw new Error("Movimento non creato con successo");
+            }
+
+            res.status(201).json(newMovimento);
+            
+        }catch (error){
+            next(error);
+        }
+    }
 }
+
