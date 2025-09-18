@@ -30,3 +30,5 @@ export class ContoCorrenteService {
         }
     }
 }
+
+export default new ContoCorrenteService;
