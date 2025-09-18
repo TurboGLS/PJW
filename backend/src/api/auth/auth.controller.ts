@@ -3,7 +3,7 @@ import { TypedRequest } from "../../lib/typed-request.interface";
 import { AddUserDTO } from "./user.dto";
 import { User } from "../user/user.entity";
 import { omit, pick } from "lodash";
-import userSrv, { EmailExistsError, MissingCredentialsError, UserExistsError } from "../user/user.service"
+import userSrv, { EmailExistsError, MissingCredentialsError } from "../user/user.service"
 import passport from "passport";
 import tokenSrv from "../../lib/auth/token.service";
 import jwt from 'jsonwebtoken';
@@ -37,7 +37,7 @@ export const add = async (
 
         res.status(200).json(newUser);
     } catch (err) {
-        if (err instanceof UserExistsError || err instanceof EmailExistsError || err instanceof MissingCredentialsError) {
+        if (err instanceof EmailExistsError || err instanceof MissingCredentialsError) {
             res.status(400).json({ err: err.name, message: err.message });
         }
         next(err);

@@ -5,14 +5,6 @@ import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const JWT_EMAIL_SECRET = process.env.JWT_EMAIL_SECRET || 'my_email_verification_secret';
 
-export class UserExistsError extends Error {
-    constructor() {
-        super();
-        this.name = 'UserExists';
-        this.message = 'username already in use';
-    }
-}
-
 export class EmailExistsError extends Error {
     constructor() {
         super();
@@ -33,11 +25,6 @@ export class UserService {
     async add(user: User, credentials: { username: string, password: string }): Promise<User> {
         if (!credentials.username || !credentials.password) {
             throw new MissingCredentialsError();
-        }
-
-        const existingIdentity = await UserIdentityModel.findOne({ 'credentials.username': credentials.username });
-        if (existingIdentity) {
-            throw new UserExistsError();
         }
 
         const existingEmail = await UserModel.findOne({ email: user.email });
