@@ -1,8 +1,8 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
-import Login from './components/login/login'
-import Register from './components/register/register'
-import Homepage from './components/homepage/Homepage'
-import "./App.scss"
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import Login from "./components/login/login";
+import Register from "./components/register/register";
+import Homepage from "./components/homepage/Homepage";
+import "./App.scss";
 
 const router = createBrowserRouter([
   {
@@ -10,31 +10,26 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/home" replace />
+        element: <Navigate to="/home" replace />,
       },
       {
         path: "/login",
-        element: <Login />
+        element: <Login />,
       },
       {
         path: "/register",
-        element: <Register />
+        element: <Register />,
       },
       {
         path: "/home",
-        element: <Homepage />
+        element: <Homepage />,
       },
-    ]
-  }
-])
+    ],
+  },
+]);
 
-
-function App(){
-  return(
-    <RouterProvider router={router} />
-  )
+function App() {
+  return <RouterProvider router={router} />;
 }
 
-
-
-export default App
+export default App;
