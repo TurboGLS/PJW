@@ -173,3 +173,5 @@ export class MovimentoContoService {
         return true
     }
 }
+
+export default new MovimentoContoService;
