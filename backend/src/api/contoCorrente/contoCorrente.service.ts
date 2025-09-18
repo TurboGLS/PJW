@@ -28,6 +28,16 @@ export class ContoCorrenteService {
             throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);
         }
     }
+
+    public async getContoCorrenteByEmail(email: string): Promise<contoCorrente | null> {
+        try {
+            const contoCorrente = await contoCorrenteModel.findOne({ email: email });
+            return contoCorrente ? contoCorrente.toJSON() as contoCorrente : null;
+        } catch (error: any) {
+            console.error(`[Service] Errore nel recupero del conto corrente con ID ${email}:`, error);
+            throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);
+        }
+    }
 }
 
 export default new ContoCorrenteService;
