@@ -5,10 +5,10 @@ const homepage = () => {
   return (
     <div className={s["main-container"]}>
       <div className={s["main-container__sidebar-container"]}>
-          <Sidebar />
+        <Sidebar />
       </div>
       <div className={s["main-container__home"]}>
-        <div>Home Works</div>
+        <div>Benvenuto/a!</div>
       </div>
     </div>
   );
