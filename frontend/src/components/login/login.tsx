@@ -1,25 +1,25 @@
-import s from './login.module.scss'
-import logo from '../../assets/intesa-mario-volpato-trasparent.png'
-import { useNavigate } from 'react-router'
-import { useState } from 'react'
-import { useAuth } from '../../contexts/auth.context'
+import s from "./login.module.scss";
+import logo from "../../assets/intesa-mario-volpato-trasparent.png";
+import { useNavigate } from "react-router";
+import { useState } from "react";
+import { useAuth } from "../../contexts/auth.context";
 
 const login = () => {
-  const navigate = useNavigate()
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const { login } = useAuth()
-  
+  const navigate = useNavigate();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const { login } = useAuth();
+
   const redirectToRegister = () => {
     navigate("/register");
   };
 
   const handleLogin = async (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     try {
-      await login(username, password)
-      navigate("/homepage")
+      await login(username, password);
+      navigate("/homepage");
     } catch (e: any) {
       setError(e.response.data.message);
       // TODO : Error notification
@@ -36,8 +36,20 @@ const login = () => {
             <hr></hr>
           </div>
           <form onSubmit={handleLogin} className={s["form-container"]}>
-            <input className={s["form-button"]} type="email" name="Email" placeholder='Email' onChange={(e) => setUsername(e.target.value)} />
-            <input className={s["form-button"]} type="password" name="Password" placeholder='Password' onChange={(e) => setPassword(e.target.value)} />
+            <input
+              className={s["form-button"]}
+              type="email"
+              name="Email"
+              placeholder="Email"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              className={s["form-button"]}
+              type="password"
+              name="Password"
+              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <input className={s["login-button"]} type="submit" value="Login" />
           </form>
         </div>

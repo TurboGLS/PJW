@@ -8,8 +8,8 @@ class UserService {
   constructor() {
     // refresh token logic, if /me fails, retries the call with the refresh one
     axios.interceptors.response.use(
-      response => response,
-      async error => {
+      (response) => response,
+      async (error) => {
         const originalRequest = error.config;
         if (
           error.response &&
@@ -22,7 +22,8 @@ class UserService {
             try {
               const res = await axios.post("/api/refresh", { refreshToken });
               this.jwtService.setToken(res.data.token);
-              originalRequest.headers["Authorization"] = "Bearer " + res.data.token;
+              originalRequest.headers["Authorization"] =
+                "Bearer " + res.data.token;
               return axios(originalRequest);
             } catch (refreshError) {
               this.logout();
@@ -39,9 +40,25 @@ class UserService {
     );
   }
 
+  async register(
+    firstName: String,
+    lastName: String,
+    email: String,
+    password: String
+  ) {
+    const res = await axios.post("api/register", {
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    return res;
+  }
+
+  
   async login(username: string, password: string): Promise<User | Error> {
     try {
-      const res = await axios.post('/api/login', { username, password });
+      const res = await axios.post("/api/login", { username, password });
       this.jwtService.setToken(res.data.token);
       this.jwtService.setRefreshToken(res.data.refreshToken);
       return res.data.user;
@@ -54,9 +71,9 @@ class UserService {
     try {
       const token = this.jwtService.getToken();
       if (!token) return null;
-      const res = await axios.get('api/user/me', {
+      const res = await axios.get("api/user/me", {
         headers: {
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         },
       });
       return res.data;
