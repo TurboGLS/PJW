@@ -3,6 +3,8 @@ import Login from './components/login/login'
 import Register from './components/register/register'
 import Homepage from './components/homepage/Homepage'
 import "./App.scss"
+import AuthGuard from './utils/auth.guard'
+import { AuthProvider } from './contexts/auth.context'
 
 const router = createBrowserRouter([
   {
@@ -21,8 +23,12 @@ const router = createBrowserRouter([
         element: <Register />
       },
       {
-        path: "/home",
-        element: <Homepage />
+        path: "/homepage",
+        element: (
+          <AuthGuard>
+            <Homepage />
+          </AuthGuard>
+        )
       },
     ]
   }
@@ -31,7 +37,9 @@ const router = createBrowserRouter([
 
 function App(){
   return(
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }
 
