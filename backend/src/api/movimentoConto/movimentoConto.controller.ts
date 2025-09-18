@@ -71,6 +71,7 @@ export class MovimentoContoController {
         }
     }
 
+    // Bonifico 
     public async postBonificoUscita(req: Request, res: Response, next: NextFunction) {
         try{
             const email = req.user?.email;

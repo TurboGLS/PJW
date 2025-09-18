@@ -6,7 +6,5 @@ const router = Router();
 const contoCorrenteController = new ContoCorrenteController();
 
 router.use(isAuthenticated);
-router.post('/', contoCorrenteController.createContoCorrente);
-router.get('/:id', contoCorrenteController.getContoCorrenteById);
 
 export default router;

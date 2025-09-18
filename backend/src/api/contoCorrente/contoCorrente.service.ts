@@ -4,7 +4,7 @@ import { movimentoContoModel } from '../movimentoConto/movimentoConto.model';
 import { movimentoConto } from '../movimentoConto/movimentoConto.entity';
 
 export class ContoCorrenteService {
-
+    // Apertura Conto Corrente
     public async addContoCorrente(contoCorrenteData: Omit<contoCorrente, 'id'>): Promise<contoCorrente> {
         try {
             const newContoCorrente = new contoCorrenteModel(contoCorrenteData);
