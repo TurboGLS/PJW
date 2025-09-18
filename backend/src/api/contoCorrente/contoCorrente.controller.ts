@@ -14,17 +14,8 @@ export class contoCorrenteController {
                 return;
             }
 
-            let aperturaDate: Date;
-            if (dataApertura) {
-                aperturaDate = new Date(dataApertura);
-                if (isNaN(aperturaDate.getTime())) {
-                    res.status(400).json({ message: 'Il campo dataApertura non è una data valida.' });
-                    return;
-                }
-            } else {
-                aperturaDate = new Date();
-            }
-
+            // prende la data di oggi per definire la data di apertura conto 
+            let aperturaDate: Date = new Date();
 
             const newContoCorrenteData = {
                 email,
