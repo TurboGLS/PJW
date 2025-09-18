@@ -1,8 +1,8 @@
 import s from "./register.module.scss";
 import BankLogo from "../../assets/intesa-mario-volpato-trasparent.png";
-import UserService from "../../services/userService";
+import UserService from "../../services/user.service";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const register = () => {
   const userSrv = new UserService();
