@@ -180,6 +180,39 @@ export class MovimentoContoService {
 
         return newMovimento;
     }
+
+    async bonificoEntrata(movimentoData: movimentoConto){
+
+        const saldoDisponibile = movimentoData.saldo;  
+        const importoSelezionato = movimentoData.importo;      
+
+        if(importoSelezionato>saldoDisponibile){
+            throw new Error ('Saldo del utente insubbiciente')
+        }
+
+        const saldoFinale = saldoDisponibile - importoSelezionato;
+
+        let categoria = await CategoryModel.findOne({ categoryName: 'Bonifico', categoryType : 'Uscita'});
+
+        if (!categoria){
+            throw new Error ('categoria non trovata');
+        }
+        const movimentoBonifico = {
+            contoCorrenteID: movimentoData.id,
+            data: new Date(),
+            importo: importoSelezionato,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'Bonifico in uscita'
+        }
+        const newMovimento = await movimentoContoModel.create(movimentoBonifico);
+        
+        if(!newMovimento){
+            throw new Error ("errore nel inserimento del movimento")
+        }
+        
+        return newMovimento
+    }
 }
 
 export default new MovimentoContoService;
