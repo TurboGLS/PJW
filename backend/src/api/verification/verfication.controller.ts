@@ -9,6 +9,10 @@ export const verifyEmail = async (
     try {
         const { token } = req.query;
 
+        if (!token) {
+            return res.status(400).json({ message: 'Token mancante' });
+        }
+
         const user = await verifyEmailToken(token as string);
         if (!user) {
             res.status(400).json({ message: 'Token non valido o scaduto' });
