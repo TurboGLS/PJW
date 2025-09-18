@@ -80,7 +80,7 @@ export const login = async (
                 if (!user) {
                     res.status(401).json({
                         error: 'LoginError',
-                        message: info.message
+                        message: info?.message || 'Credenziali non valide'
                     });
                     return;
                 }

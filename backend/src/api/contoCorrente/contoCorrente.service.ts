@@ -2,7 +2,6 @@ import { contoCorrenteModel } from './contoCorrente.model';
 import { contoCorrente } from './contoCorrente.entity';
 
 export class ContoCorrenteService {
-
     public async addContoCorrente(contoCorrenteData: Omit<contoCorrente, 'id'>): Promise<contoCorrente> {
         try {
             const newContoCorrente = new contoCorrenteModel(contoCorrenteData);
@@ -18,7 +17,6 @@ export class ContoCorrenteService {
             throw new Error(`Errore durante la creazione del conto corrente: ${error.message}`);
         }
     }
-
 
     public async getContoCorrenteById(id: string): Promise<contoCorrente | null> {
         try {
