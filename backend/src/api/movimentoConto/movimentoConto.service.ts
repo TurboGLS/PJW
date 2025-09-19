@@ -229,6 +229,34 @@ export class MovimentoContoService {
         return newMovimento;
     }
 
+    // FUNZIONA: funzione per il versamento on il bancomat
+    async versamentoBancomat(movimentoData: movimentoConto, importo: number){
+        
+        const saldoFinale = movimentoData.saldo + importo;
+        let categoria = await CategoryModel.findOne({ categoryName: 'Versamento Bancomat', categoryType : 'Entrata'});
+
+        if (!categoria){
+            throw new Error ('categoria non trovata');
+        }
+
+        const movRicarica = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+            data: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'versamento bancomat'
+        }
+
+        const newMovimento = await movimentoContoModel.create(movRicarica);
+
+        if(!newMovimento){
+            throw new Error ("errore durante la ricarica")
+        }
+        return newMovimento;
+    }
+
+
 
 
     // TO FIX
@@ -256,7 +284,7 @@ export class MovimentoContoService {
             throw new Error('categoria non trovata');
         }
         const movimentoBonificoMittente = {
-            contoCorrenteID: movimentoDataMittente.id,
+            contoCorrenteID: movimentoDataMittente.id,   // qui st l'errore --> mettere contoCorrenteID mittente 
             data: new Date(),
             importo: importoSelezionato,
             saldo: saldoFinaleMittente,
@@ -264,7 +292,7 @@ export class MovimentoContoService {
             descrizioneEstesa: 'Bonifico in uscita'
         }
         const movimentoBonificoDestinatario = {
-            contoCorrenteID: movimentoDataDestinatario.id,
+            contoCorrenteID: movimentoDataDestinatario.id,  // qui st l'errore --> mettere contoCorrenteID destinatario
             data: new Date(),
             importo: importoSelezionato,
             saldo: saldoFinaleDestinatario,
@@ -285,6 +313,8 @@ export class MovimentoContoService {
 
         return true
     }
+
+    
 }
 
 export default new MovimentoContoService;

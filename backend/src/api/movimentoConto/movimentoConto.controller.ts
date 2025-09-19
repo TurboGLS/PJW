@@ -262,6 +262,39 @@ export class MovimentoContoController {
         }
     }
 
+    // FUNZIONA: funzione per il versamento con il bancomat
+    public async postVersamentoBancomat(req: Request, res: Response, next: NextFunction) {
+        try{
+            const email = req.user?.email;
+            const {importo} = req.body;
+            if(!importo){
+                throw new Error("importo non inserito")
+            }
+            if (!email) {
+                throw new Error ("Email non trovata")
+            }
+            const contoCorrente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
+            if (!contoCorrente) {
+                throw new Error("Conto corrente mittente non trovato per l'email specificata");
+            }
+            if (!contoCorrente.id) {
+                throw new Error("Conto correnteID non trovato");
+            }
+            const lastMovimento = await movimentoContoService.getLastOperationByContoId(contoCorrente.id);
+            if (!lastMovimento) {
+                throw new Error("ultima operazione non trovata");
+            }
+            const newMovimento = await movimentoContoService.versamentoBancomat(lastMovimento, importo);
+            if (!newMovimento) {
+                throw new Error("versamento bancomat non eseguito con successo");
+            }
+            res.status(201).json(newMovimento);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
 
 
     // Bonifico 
