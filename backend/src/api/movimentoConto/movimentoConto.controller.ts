@@ -180,6 +180,45 @@ export class MovimentoContoController {
         }
     }
 
+    
+    public async postPagamentoUtenze(req: Request, res: Response, next: NextFunction) {
+        try{
+            const email = req.user?.email;
+            const {importo} = req.body;
+            if(!importo){
+                res.status(400).json("importo non inserito")
+                return;
+            }
+            if (!email) {
+                res.status(400).json("Email non trovata")
+                return;
+            }
+            const contoCorrente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
+            if (!contoCorrente) {
+                res.status(400).json("Conto corrente mittente non trovato per l'email specificata");
+                return;
+            }
+            if (!contoCorrente.id) {
+                res.status(400).json("Conto correnteID non trovato");
+                return;
+            }
+            const lastMovimento = await movimentoContoService.getLastOperationByContoId(contoCorrente.id);
+            if (!lastMovimento) {
+                res.status(400).json("ultima operazione non trovata");
+                return;
+            }
+            const newMovimento = await movimentoContoService.pagamentoUtenze(lastMovimento, importo);
+            if (!newMovimento) {
+                res.status(400).json("pagamento non eseguito con successo");
+                return;
+            }
+            res.status(201).json(newMovimento);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+
     // Bonifico 
     public async postBonificoUscita(req: Request, res: Response, next: NextFunction) {
         try {
@@ -238,5 +277,8 @@ export class MovimentoContoController {
             next(error);
         }
     }
+
+
+
 }
 

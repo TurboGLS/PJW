@@ -151,7 +151,7 @@ export class MovimentoContoService {
 
         const movRicarica = {
             contoCorrenteID: movimentoData.contoCorrenteID,
-            DataTransfer: new Date(),
+            data: new Date(),
             importo: importo,
             saldo: saldoFinale,
             categoriaMovimentoID: categoria._id,
@@ -166,6 +166,37 @@ export class MovimentoContoService {
 
         return newMovimento
     }
+
+
+    async pagamentoUtenze(movimentoData: movimentoConto, importo: number){
+        if (movimentoData.saldo<importo){
+            throw new Error ("saldo insufficente");
+        }
+
+        const saldoFinale = movimentoData.saldo - importo;
+        let categoria = await CategoryModel.findOne({ categoryName: 'Pagamento Utenze', categoryType : 'Uscita'});
+
+        if (!categoria){
+            throw new Error ('categoria non trovata');
+        }
+
+        const movPagamentoUtenze = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+            data: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'Pagamento Utenze'
+        }
+
+        const newMovimento = await movimentoContoModel.create(movPagamentoUtenze);
+
+        if(!newMovimento){
+            throw new Error ("errore nella creazione del movimento")
+        }
+        return newMovimento;
+
+    }    
 
 
 
