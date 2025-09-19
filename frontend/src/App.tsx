@@ -5,6 +5,7 @@ import Homepage from "./components/homepage/Homepage";
 import "./App.scss";
 import AuthGuard from "./utils/auth.guard";
 import { AuthProvider } from "./contexts/auth.context";
+import IsLoggedGuard from "./utils/isLogged.guard";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +17,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <IsLoggedGuard>
+            <Login />
+          </IsLoggedGuard>
+        ),
       },
       {
         path: "/register",
-        element: <Register />,
+        element: (
+          <IsLoggedGuard>
+            <Register />
+          </IsLoggedGuard>
+        ),
       },
       {
         path: "/homepage",
