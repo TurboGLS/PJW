@@ -63,7 +63,38 @@ export class UserService {
         return user ? user.toObject() : null;
     }
 
-    //async patchModificaPassword()
+    async patchModificaPassword(email: string, oldPassword: string, newPassword: string): Promise<User> {
+        // Trovo l'utente
+        const user = await UserModel.findOne({ email: email });
+
+        if (!user) {
+            throw new Error(`Nessun user trovato correlato alla email: ${email}`);
+        }
+
+        // Trovo le crendeziali correlate
+        const identity = await UserIdentityModel.findOne({ user: user.id, provider: 'local' });
+
+        if (!identity) {
+            throw new Error(`Credenziali non trovate per l'utente con email: ${email}`)
+        }
+
+        const hashedPassword = identity.credentials.hashedPassword;
+
+        // Controllo la vecchia password
+        const isMatch = await bcrypt.compare(oldPassword, hashedPassword);
+        if (!isMatch) {
+            throw new Error('La vecchia password non corrisponde a quella impostata');
+        }
+
+        // Genero l’hash della nuova password
+        const newHashedPassword = await bcrypt.hash(newPassword, 10);
+
+        // Aggiorno le credenziali
+        identity.credentials.hashedPassword = newHashedPassword;
+        await identity.save();
+
+        return user;
+    }
 }
 
 export default new UserService();
