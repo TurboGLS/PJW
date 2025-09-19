@@ -7,7 +7,7 @@ class UserService {
 
   constructor() {
     // refresh token logic, if /me fails, retries the call with the refresh one
-    unauthAxiosInstance.interceptors.response.use(
+    authAxiosInstance.interceptors.response.use(
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
