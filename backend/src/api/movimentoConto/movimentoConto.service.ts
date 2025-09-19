@@ -56,12 +56,12 @@ export class MovimentoContoService {
         }
     }
 
-    // Questo trova tutti i movimenti in base alla categoria / FUNZIONA per ricerca movimenti per categoria
+    // Questo trova tutti i movimenti in base alla categoria
     async getMovimentiByCategoria(limit: number, contoCorrenteId: string, categoriaMovimentoId: string): Promise<movimentoConto[]> {
         try {
             const movimenti = await movimentoContoModel.find({ contoCorrenteID: contoCorrenteId, categoriaMovimentoID: categoriaMovimentoId })
                 .populate('contoCorrenteID', 'iban')
-                .populate('categoriaMovimentoID')
+                .populate('categoriaMovimentoID', 'categoryName', 'categoryType')
                 .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
                 .limit(limit)
                 .lean();
@@ -72,7 +72,7 @@ export class MovimentoContoService {
         }
     }
 
-    // Trova CategoryName per CategoryId / FUNZIONA per ricerca movimenti per categoria
+    // Trova CategoryName per CategoryId
     async getCategoryIdByName(categoryName: string, categoryType: string): Promise<string | null> {
         try {
             const categoria = await CategoryModel.findOne({ categoryName, categoryType }).select('_id').lean();
