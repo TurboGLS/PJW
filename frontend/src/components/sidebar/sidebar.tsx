@@ -8,9 +8,11 @@ import Icon from '@mdi/react';
 import { mdiBank } from '@mdi/js';
 import { mdiCellphoneArrowDownVariant } from '@mdi/js';
 import { mdiCashMultiple } from '@mdi/js';
+import { useNavigate } from "react-router";
 
 const Sidebar = () => {
   const [user, setUser] = useState<User | null>();
+  const navigate = useNavigate();
 
   const fetchUser = async () => {
     const response = await authService.fetchUser();
@@ -26,22 +28,26 @@ const Sidebar = () => {
     return;
   }
 
+  const redirectToProfile = () => {
+    navigate("/profile");
+  }
+
   return (
     <div className={s["main-container"]}>
       <img className={s["logo"]} src={logo} />
       <div className={s["page-button"]}>
         <Icon path={mdiBank} size={1} />
-        Bonifico
+        <label>Bonifico</label>
       </div>
       <div className={s["page-button"]}>
         <Icon path={mdiCellphoneArrowDownVariant} size={1} />
-        Ricarica Telefonica
+        <label>Ricarica Telefonica</label>
       </div>
       <div className={s["page-button"]}>
         <Icon path={mdiCashMultiple} size={1} />
-        Saldo
+        <label>Saldo</label>
       </div>
-      <div className={s["user-area"]}>
+      <div className={s["user-area"]} onClick={redirectToProfile}>
         <ProfileInfos user={user}></ProfileInfos>
       </div>
     </div>

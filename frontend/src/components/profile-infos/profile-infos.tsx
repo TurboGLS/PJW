@@ -12,16 +12,20 @@ interface ProfileInfosProps {
 const ProfileInfos = ({ user }: ProfileInfosProps) => {
   const navigate = useNavigate();
   
-  const logout = async () => {
+  const logout = async (event: React.MouseEvent) => {
+    event.stopPropagation();
     authService.logout();
     navigate("/login");
   };
   
   return (
     <div className={s["user-container"]}>
-      <div>{user.firstName} {user.lastName}</div>
-      <div onClick={logout}>
-        <Icon path={mdiLogout} size={1} />
+      <div className={s["username-container"]}>
+        <img src="https://cdn-icons-png.freepik.com/256/12225/12225881.png?semt=ais_white_label"/>
+        <label>{user.firstName} {user.lastName}</label>
+        <div className={s["logout-container"]} onClick={logout}>
+          <Icon path={mdiLogout} className={s["logout-button"]} size={1} />
+        </div>
       </div>
     </div>
   );
