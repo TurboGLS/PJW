@@ -110,6 +110,15 @@ export const login = async (
                     return;
                 }
 
+                // Verifica se l'utente è attivo
+                if (!user.active) {
+                    res.status(403).json({
+                        error: "AccountNotActive",
+                        message: "Devi prima verificare la tua email per attivare l'account.",
+                    });
+                    return;
+                }
+
                 const { token, refreshToken } = await tokenSrv.generateTokenPair(
                     user.id
                 );
