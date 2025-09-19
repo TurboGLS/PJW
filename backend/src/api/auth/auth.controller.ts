@@ -103,7 +103,7 @@ export const login = async (
         }
 
         if (!user) {
-          res.status(400).json({
+          res.status(404).json({
             error: "LoginError",
             message: info?.message || "Credenziali non valide",
           });
