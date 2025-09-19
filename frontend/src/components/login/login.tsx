@@ -50,6 +50,7 @@ const login = () => {
               placeholder="Password"
               onChange={(e) => setPassword(e.target.value)}
             />
+            {error ? <p>{error}</p> : null}
             <input className={s["login-button"]} type="submit" value="Login" />
           </form>
         </div>
