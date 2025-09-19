@@ -1,10 +1,10 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router'
-import Login from './components/login/login'
-import Register from './components/register/register'
-import Homepage from './components/homepage/Homepage'
-import "./App.scss"
-import AuthGuard from './utils/auth.guard'
-import { AuthProvider } from './contexts/auth.context'
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router";
+import Login from "./components/login/login";
+import Register from "./components/register/register";
+import Homepage from "./components/homepage/Homepage";
+import "./App.scss";
+import AuthGuard from "./utils/auth.guard";
+import { AuthProvider } from "./contexts/auth.context";
 
 const router = createBrowserRouter([
   {
@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/home" replace />,
+        element: <Navigate to="/homepage" replace />,
       },
       {
         path: "/login",
@@ -28,20 +28,18 @@ const router = createBrowserRouter([
           <AuthGuard>
             <Homepage />
           </AuthGuard>
-        )
+        ),
       },
     ],
   },
 ]);
 
-function App(){
-  return(
+function App() {
+  return (
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  )
+  );
 }
 
-
-
-export default App
+export default App;
