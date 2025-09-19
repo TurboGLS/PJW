@@ -2,45 +2,54 @@ import JwtService from "./jwt.service";
 import type { User } from "../entities/user.entity";
 import { authAxiosInstance, unauthAxiosInstance } from "../lib/axios";
 
-class UserService {
+class AuthService {
   private jwtService = new JwtService();
 
   constructor() {
-    // refresh token logic, if /me fails, retries the call with the refresh one
-    unauthAxiosInstance.interceptors.response.use(
-      (response) => response,
-      async (error) => {
-        const originalRequest = error.config;
-        if (
-          error.response &&
-          error.response.status === 401 &&
-          !originalRequest._retry
-        ) {
-          originalRequest._retry = true;
-          const refreshToken = this.jwtService.getRefreshToken();
-          if (refreshToken) {
-            try {
-              const res = await unauthAxiosInstance.post("/api/refresh", {
-                refreshToken,
-              });
-              this.jwtService.setToken(res.data.token);
+    const refreshInterceptor = async (error: any) => {
+      const originalRequest = error.config;
+      if (
+        error.response &&
+        error.response.status === 401 &&
+        !originalRequest._retry
+      ) {
+        originalRequest._retry = true;
+        const refreshToken = this.jwtService.getRefreshToken();
+        if (refreshToken) {
+          try {
+            const res = await unauthAxiosInstance.post("/api/refresh", { refreshToken });
+            this.jwtService.setToken(res.data.token);
+            originalRequest.headers["Authorization"] = "Bearer " + res.data.token;
+            if (originalRequest.baseURL === authAxiosInstance.defaults.baseURL) {
               return authAxiosInstance(originalRequest);
-            } catch (refreshError) {
-              this.logout();
-              window.location.href = "/login";
-              return Promise.reject(refreshError);
+            } else {
+              return unauthAxiosInstance(originalRequest);
             }
-          } else {
+          } catch (refreshError) {
             this.logout();
             window.location.href = "/login";
+            return Promise.reject(refreshError);
           }
+        } else {
+          this.logout();
+          window.location.href = "/login";
+          return Promise.reject(error);
         }
-        return Promise.reject(error);
       }
+      return Promise.reject(error);
+    };
+
+    authAxiosInstance.interceptors.response.use(
+      response => response,
+      refreshInterceptor
+    );
+    unauthAxiosInstance.interceptors.response.use(
+      response => response,
+      refreshInterceptor
     );
 
     authAxiosInstance.interceptors.request.use((request) => {
-      request.headers.setAuthorization("Bearer " + this.jwtService.getToken());
+      request.headers["Authorization"] = "Bearer " + this.jwtService.getToken();
       return request;
     });
   }
@@ -89,5 +98,5 @@ class UserService {
   }
 }
 
-const authService = new UserService();
+const authService = new AuthService();
 export default authService;
