@@ -1,6 +1,37 @@
 .user-container {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    font-size: 18px;
+    justify-content: center;
+    text-transform: capitalize;
+    padding: 0px;
+    margin: 0px;
+}
+
+.username-container {
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 16px;
+
+    img {
+        max-width: 25px;
+        max-height: 25px;
+        margin-right: 5px;
+    }
+
+    .logout-container {
+        display: flex;
+        align-items: center;
+        
+        .logout-button {
+            color: black;
+            margin-left: 20px;
+            transition: color 200ms;
+        }
+        
+        .logout-button:hover {
+            color: rgb(12,65,125);
+            transition: all 200ms;
+        }
+    }
 }
