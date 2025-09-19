@@ -268,10 +268,10 @@ export class MovimentoContoController {
             const email = req.user?.email;
             const {importo} = req.body;
             if(!importo){
-                throw new Error("importo non inserito")
+                throw new Error("importo non inserito");
             }
             if (!email) {
-                throw new Error ("Email non trovata")
+                throw new Error ("Email non trovata");
             }
             const contoCorrente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
             if (!contoCorrente) {
@@ -343,7 +343,7 @@ export class MovimentoContoController {
                 throw new Error("ultimo Movimento non trovato");
             }
 
-            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario);
+            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario, importo);
 
             if (!newMovimento) {
                 throw new Error("Movimento non creato con successo");

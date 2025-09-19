@@ -260,18 +260,17 @@ export class MovimentoContoService {
 
 
     // TO FIX
-    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto) {
+    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto, importo: number) {
 
         const saldoDisponibile = movimentoDataMittente.saldo;
         const saldoDestinatario = movimentoDataDestinatario.saldo;
-        const importoSelezionato = movimentoDataMittente.importo;
 
-        if (importoSelezionato > saldoDisponibile) {
+        if (importo > saldoDisponibile) {
             throw new Error('Saldo del utente insubbiciente')
         }
 
-        const saldoFinaleMittente = saldoDisponibile - importoSelezionato;
-        const saldoFinaleDestinatario = saldoDestinatario + importoSelezionato;
+        const saldoFinaleMittente = saldoDisponibile - importo;
+        const saldoFinaleDestinatario = saldoDestinatario + importo;
 
         let categoriaUscita = await CategoryModel.findOne({ categoryName: 'Bonifico', categoryType: 'Uscita' });
         let categoriaEntrata = await CategoryModel.findOne({ categoryName: 'Bonifico', categoryType: 'Entrata' });
@@ -284,17 +283,17 @@ export class MovimentoContoService {
             throw new Error('categoria non trovata');
         }
         const movimentoBonificoMittente = {
-            contoCorrenteID: movimentoDataMittente.id,   // qui st l'errore --> mettere contoCorrenteID mittente 
+            contoCorrenteID: movimentoDataMittente.contoCorrenteID,    
             data: new Date(),
-            importo: importoSelezionato,
+            importo: importo,
             saldo: saldoFinaleMittente,
             categoriaMovimentoID: categoriaUscita._id,
             descrizioneEstesa: 'Bonifico in uscita'
         }
         const movimentoBonificoDestinatario = {
-            contoCorrenteID: movimentoDataDestinatario.id,  // qui st l'errore --> mettere contoCorrenteID destinatario
+            contoCorrenteID: movimentoDataDestinatario.contoCorrenteID,  
             data: new Date(),
-            importo: importoSelezionato,
+            importo: importo,
             saldo: saldoFinaleDestinatario,
             categoriaMovimentoID: categoriaEntrata._id,
             descrizioneEstesa: 'Bonifico in entrata'
@@ -305,13 +304,24 @@ export class MovimentoContoService {
         const newMovimentoEntrata = await movimentoContoModel.create(movimentoBonificoDestinatario);
 
         if (!newMovimentoUscita) {
-            throw new Error("errore nella creazione del movimento uscita")
+            throw new Error("errore nella creazione del movimento uscita");
         }
         if (!newMovimentoEntrata) {
-            throw new Error("errore nella creazione del movimento entrata")
+            throw new Error("errore nella creazione del movimento entrata");
         }
 
-        return true
+        const bonificoCompleto = {
+            movimentoUscita: newMovimentoUscita,
+            movimentoEntrata: newMovimentoEntrata
+        };
+
+
+        if (!bonificoCompleto){
+            throw new Error("errore nella generazione del output");
+        }
+
+        return bonificoCompleto;
+
     }
 
     
