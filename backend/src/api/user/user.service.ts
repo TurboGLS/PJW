@@ -4,6 +4,7 @@ import { UserModel } from "./user.model";
 import * as bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 const JWT_EMAIL_SECRET = process.env.JWT_EMAIL_SECRET || 'my_email_verification_secret';
+import { isStrongPassword } from 'class-validator';
 
 export class EmailExistsError extends Error {
     constructor() {
@@ -84,6 +85,17 @@ export class UserService {
         const isMatch = await bcrypt.compare(oldPassword, hashedPassword);
         if (!isMatch) {
             throw new Error('La vecchia password non corrisponde a quella impostata');
+        }
+
+        // Verifico che la nuova password sia "forte"
+        if (!isStrongPassword(newPassword, {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 1
+        })) {
+            throw new Error('La nuova password non è abbastanza sicura. Deve avere almeno 8 caratteri, includere maiuscole, minuscole, numeri e simboli.');
         }
 
         // Genero l’hash della nuova password
