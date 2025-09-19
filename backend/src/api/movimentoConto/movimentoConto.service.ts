@@ -56,7 +56,7 @@ export class MovimentoContoService {
         }
     }
 
-    // Questo trova tutti i movimenti in base alla categoria
+    // Questo trova tutti i movimenti in base alla categoria / FUNZIONA per ricerca movimenti per categoria
     async getMovimentiByCategoria(limit: number, contoCorrenteId: string, categoriaMovimentoId: string): Promise<movimentoConto[]> {
         try {
             const movimenti = await movimentoContoModel.find({ contoCorrenteID: contoCorrenteId, categoriaMovimentoID: categoriaMovimentoId })
@@ -72,7 +72,7 @@ export class MovimentoContoService {
         }
     }
 
-    // Trova CategoryName per CategoryId
+    // Trova CategoryName per CategoryId / FUNZIONA per ricerca movimenti per categoria
     async getCategoryIdByName(categoryName: string, categoryType: string): Promise<string | null> {
         try {
             const categoria = await CategoryModel.findOne({ categoryName, categoryType }).select('_id').lean();
@@ -135,6 +135,45 @@ export class MovimentoContoService {
         return newMovimento;
     }
 
+    // RICARCIA cellulare
+    async ricaricaUscita(movimentoData: movimentoConto, importo: number, numeroTelefono: number) {
+        if (movimentoData.saldo < importo) {
+            throw new Error('saldo insufficiente');
+        }
+
+        const saldoFinale = movimentoData.saldo -importo;
+
+        let categoria = await CategoryModel.findOne({ categoryName: 'Ricarica', categoryType: 'Uscita' });
+
+        if (!categoria) {
+            throw new Error('Categoria non trovate');
+        }
+
+        const movRicarica = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+            DataTransfer: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: `Ricarca in uscita verso numero ${numeroTelefono}`
+        }
+
+        const newMovimento = await movimentoContoModel.create(movRicarica);
+
+        if (!newMovimento) {
+            throw new Error('Errore durante la ricarica');
+        }
+
+        return newMovimento
+    }
+
+
+
+
+
+
+
+    // TO FIX
     async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto) {
 
         const saldoDisponibile = movimentoDataMittente.saldo;

@@ -31,6 +31,7 @@ export class ContoCorrenteService {
         }
     }
 
+    // FUNZIONA PER Ricerca Movimenti Categoria
     public async getContoCorrenteByEmail(email: string): Promise<contoCorrente | null> {
         try {
             const contoCorrente = await contoCorrenteModel.findOne({ email: email });
