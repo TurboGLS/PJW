@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import authService from "../services/auth.service";
 import type { User } from "../entities/user.entity";
+import JwtService from "../services/jwt.service";
 
 interface AuthContextType {
   user: User | null;
@@ -15,32 +16,39 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const jwtService = new JwtService();
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
-    authService.fetchUser().then((u) => {
-      setUser(u);
+    const token = jwtService.getToken();
+    if (token) {
+      authService.fetchUser().then((u) => {
+        setUser(u);
+        setLoading(false);
+      });
+    } else {
+      setUser(null);
       setLoading(false);
-    });
+    }
   }, []);
-
+  
   const login = async (username: string, password: string) => {
     const result = await authService.login(username, password);
     if (!(result instanceof Error)) setUser(result as User);
     return result;
   };
-
+  
   const logout = () => {
     authService.logout();
     setUser(null);
   };
-
+  
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, loading, login, logout }}
+    value={{ user, isAuthenticated: !!user, loading, login, logout }}
     >
-      {children}
+    {children}
     </AuthContext.Provider>
   );
 };

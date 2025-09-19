@@ -30,8 +30,8 @@ const Sidebar = () => {
 
   return (
     <div className={s["main-container"]}>
-      <div>Bonifico</div>
-      <div>Ricarica Telefonica</div>
+      <div className={s["page-button"]}>Bonifico</div>
+      <div className={s["page-button"]}>Ricarica Telefonica</div>
       <ProfileInfos user={user}></ProfileInfos>
       <button onClick={logout}>Logout</button>
     </div>
