@@ -62,6 +62,8 @@ export class UserService {
         const user = await UserModel.findById(userId);
         return user ? user.toObject() : null;
     }
+
+    //async patchModificaPassword()
 }
 
 export default new UserService();

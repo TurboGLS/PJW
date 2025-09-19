@@ -4,7 +4,7 @@ import { movimentoContoModel } from '../movimentoConto/movimentoConto.model';
 import { movimentoConto } from '../movimentoConto/movimentoConto.entity';
 
 export class ContoCorrenteService {
-    // Apertura Conto Corrente
+    // Apertura Conto Corrente FUNZIONA
     public async addContoCorrente(contoCorrenteData: Omit<contoCorrente, 'id'>): Promise<contoCorrente> {
         try {
             const newContoCorrente = new contoCorrenteModel(contoCorrenteData);
@@ -21,6 +21,7 @@ export class ContoCorrenteService {
         }
     }
 
+    // FUNZIONA
     public async getContoCorrenteById(id: string): Promise<movimentoConto | null> {
         try {
             const movimentoConto = await movimentoContoModel.findById(id);
@@ -31,6 +32,7 @@ export class ContoCorrenteService {
         }
     }
 
+    // FUNZIONA
     public async getContoCorrenteByEmail(email: string): Promise<contoCorrente | null> {
         try {
             const contoCorrente = await contoCorrenteModel.findOne({ email: email });
@@ -41,6 +43,7 @@ export class ContoCorrenteService {
         }
     }
 
+    // FUNZIONA
     public async getContoCorrenteByIban(iban: string): Promise<contoCorrente | null> {
         try {
             const contoCorrente = await contoCorrenteModel.findOne({ iban: iban });

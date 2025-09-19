@@ -135,6 +135,103 @@ export class MovimentoContoService {
         return newMovimento;
     }
 
+    // RICARCIA cellulare
+    async ricaricaUscita(movimentoData: movimentoConto, importo: number, numeroTelefono: number) {
+        if (movimentoData.saldo < importo) {
+            throw new Error('saldo insufficiente');
+        }
+
+        const saldoFinale = movimentoData.saldo -importo;
+
+        let categoria = await CategoryModel.findOne({ categoryName: 'Ricarica', categoryType: 'Uscita' });
+
+        if (!categoria) {
+            throw new Error('Categoria non trovate');
+        }
+
+        const movRicarica = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+            data: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: `Ricarca in uscita verso numero ${numeroTelefono}`
+        }
+
+        const newMovimento = await movimentoContoModel.create(movRicarica);
+
+        if (!newMovimento) {
+            throw new Error('Errore durante la ricarica');
+        }
+
+        return newMovimento
+    }
+
+
+    // FUNZIONA  -->  funzione per gagamento delle utenze 
+    async pagamentoUtenze(movimentoData: movimentoConto, importo: number){
+        if (movimentoData.saldo<importo){
+            throw new Error ("saldo insufficente");
+        }
+
+        const saldoFinale = movimentoData.saldo - importo;
+        let categoria = await CategoryModel.findOne({ categoryName: 'Pagamento Utenze', categoryType : 'Uscita'});
+
+        if (!categoria){
+            throw new Error ('categoria non trovata');
+        }
+
+        const movPagamentoUtenze = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+            data: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'Pagamento Utenze'
+        }
+
+        const newMovimento = await movimentoContoModel.create(movPagamentoUtenze);
+
+        if(!newMovimento){
+            throw new Error ("errore nella creazione del movimento")
+        }
+        return newMovimento;
+
+    }    
+
+    // FUNZIONA --> funzione per il prelievo contanti dal conto 
+    async prelievoContanti(movimentoData: movimentoConto, importo: number){
+        if (movimentoData.saldo<importo){
+            throw new Error ("saldo insufficente");
+        }
+        
+        const saldoFinale = movimentoData.saldo - importo;
+        let categoria = await CategoryModel.findOne({ categoryName: 'Prelievo Contanti', categoryType : 'Uscita'});
+        
+        if (!categoria){
+            throw new Error ('categoria non trovata');
+        }
+        
+        const movimentoPrelievoContanti = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+             data: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'Prelievo Contanti'
+        }
+
+        const newMovimento = await movimentoContoModel.create(movimentoPrelievoContanti);
+
+        if(!newMovimento){
+            throw new Error ("errore nella creazione del movimento")
+        }
+        return newMovimento;
+    }
+
+
+
+    // TO FIX
     async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto) {
 
         const saldoDisponibile = movimentoDataMittente.saldo;

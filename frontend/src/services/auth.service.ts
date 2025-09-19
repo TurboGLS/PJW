@@ -17,10 +17,15 @@ class AuthService {
         const refreshToken = this.jwtService.getRefreshToken();
         if (refreshToken) {
           try {
-            const res = await unauthAxiosInstance.post("/api/refresh", { refreshToken });
+            const res = await unauthAxiosInstance.post("/api/refresh", {
+              refreshToken,
+            });
             this.jwtService.setToken(res.data.token);
-            originalRequest.headers["Authorization"] = "Bearer " + res.data.token;
-            if (originalRequest.baseURL === authAxiosInstance.defaults.baseURL) {
+            originalRequest.headers["Authorization"] =
+              "Bearer " + res.data.token;
+            if (
+              originalRequest.baseURL === authAxiosInstance.defaults.baseURL
+            ) {
               return authAxiosInstance(originalRequest);
             } else {
               return unauthAxiosInstance(originalRequest);
@@ -40,11 +45,7 @@ class AuthService {
     };
 
     authAxiosInstance.interceptors.response.use(
-      response => response,
-      refreshInterceptor
-    );
-    unauthAxiosInstance.interceptors.response.use(
-      response => response,
+      (response) => response,
       refreshInterceptor
     );
 
