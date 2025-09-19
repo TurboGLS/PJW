@@ -40,7 +40,7 @@ export class MovimentoContoController {
     // FUNZIONA da pulire il dato in output
     public async getLimitedMovimentiConto(req: Request, res: Response): Promise<void> {
         try {
-            const limit = parseInt(req.body.limit as string);
+            const limit = parseInt(req.query.limit as string);
             const email = req.user?.email;
 
             if (isNaN(limit) || limit <= 0) {
@@ -76,20 +76,54 @@ export class MovimentoContoController {
         }
     }
 
-    public async getMovimentiByCategoria(req: Request, res: Response): Promise<void> {
+    // FIXING
+    public async getMovimentiByCategoria(req: Request, res: Response) {
         try {
-            const { categoriaId } = req.params;
+            const limit = parseInt(req.body.limit as string);
+            const email = req.user?.email;
+            const categoryName = req.body.categoryName as string;
+            const categoryType = req.body.categoryType as string;
 
-            if (!mongoose.Types.ObjectId.isValid(categoriaId)) {  // < - - - - - -  qui mi da un errore ma forse è un problema mio di una libreria che ho attiva 
-                res.status(400).json({ message: "ID categoria non valido." });
+            if (isNaN(limit) || limit <= 0) {
+                res.status(400).json({ message: "Il parametro 'limit' deve essere un numero intero positivo." });
                 return;
             }
 
-            const movimenti = await movimentoContoService.getMovimentiByCategoria(categoriaId);
+            if (!email) {
+                res.status(400).json({ message: "Il parametro 'email' è obbligatorio." });
+                return;
+            }
+
+            if (!categoryName) {
+                res.status(400).json({ message: 'Nome Categoria non inserito' });
+                return;
+            }
+
+            if (!categoryType) {
+                res.status(400).json({ message: 'Type Categoria non inserito' });
+                return;
+            }
+
+            const contoCorrente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
+
+            if (!contoCorrente?.id) {
+                res.status(404).json({ message: 'Impossible trovare un contoCorrente correlato alla email inserita' });
+                return;
+            }
+
+            const categoryId = await movimentoContoService.getCategoryIdByName(categoryName, categoryType);
+
+            if (!categoryId) {
+                res.status(400).json({ message: 'CategoryId non trovato' });
+                return;
+            }
+
+            const movimenti = await movimentoContoService.getMovimentiByCategoria(limit, contoCorrente.id, categoryId);
+
             res.status(200).json(movimenti);
         } catch (error: any) {
-            console.error("Errore nel controller getMovimentiByCategoria:", error.message);
-            res.status(500).json({ message: "Errore durante il recupero dei movimenti per categoria.", error: error.message });
+            console.error("Errore nel controller getLimitedMovimentiConto:", error.message);
+            res.status(500).json({ message: "Errore durante il recupero dei movimenti conto limitati.", error: error.message });
         }
     }
 
