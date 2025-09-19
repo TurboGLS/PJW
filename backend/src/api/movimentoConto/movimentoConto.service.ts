@@ -61,7 +61,7 @@ export class MovimentoContoService {
         try {
             const movimenti = await movimentoContoModel.find({ contoCorrenteID: contoCorrenteId, categoriaMovimentoID: categoriaMovimentoId })
                 .populate('contoCorrenteID', 'iban')
-                .populate('categoriaMovimentoID', 'categoryName', 'categoryType')
+                .populate('categoriaMovimentoID')
                 .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
                 .limit(limit)
                 .lean();

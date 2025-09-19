@@ -9,7 +9,6 @@ const router = Router();
 router.use(isAuthenticated);
 router.get('/', movimentoContoController.getAllMovimentiConto);
 router.get('/limited', movimentoContoController.getLimitedMovimentiConto);
-router.get('/:id', movimentoContoController.getMovimentoContoById);
 router.get('/by-categoria', movimentoContoController.getMovimentiByCategoria);
 router.post('/bonifico-uscita', movimentoContoController.postBonificoUscita)
 

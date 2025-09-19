@@ -76,10 +76,10 @@ export class MovimentoContoController {
         }
     }
 
-    // FIXING
+    // FUNZIONA
     public async getMovimentiByCategoria(req: Request, res: Response) {
         try {
-            const limit = parseInt(req.body.limit as string);
+            const limit = parseInt(req.query.limit as string);
             const email = req.user?.email;
             const categoryName = req.body.categoryName as string;
             const categoryType = req.body.categoryType as string;
@@ -113,7 +113,7 @@ export class MovimentoContoController {
 
             const categoryId = await movimentoContoService.getCategoryIdByName(categoryName, categoryType);
 
-            if (!categoryId) {
+            if (!categoryId || !mongoose.Types.ObjectId.isValid(categoryId)) {
                 res.status(400).json({ message: 'CategoryId non trovato' });
                 return;
             }
