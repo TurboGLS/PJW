@@ -6,6 +6,7 @@ import "./App.scss";
 import AuthGuard from "./utils/auth.guard";
 import { AuthProvider } from "./contexts/auth.context";
 import IsLoggedGuard from "./utils/isLogged.guard";
+import ProfilePage from "./components/profile-page/profile-page";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,14 @@ const router = createBrowserRouter([
         element: (
           <AuthGuard>
             <Homepage />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <AuthGuard>
+            <ProfilePage />
           </AuthGuard>
         ),
       },
