@@ -168,6 +168,7 @@ export class MovimentoContoService {
     }
 
 
+    // FUNZIONA  -->  funzione per gagamento delle utenze 
     async pagamentoUtenze(movimentoData: movimentoConto, importo: number){
         if (movimentoData.saldo<importo){
             throw new Error ("saldo insufficente");
@@ -198,9 +199,35 @@ export class MovimentoContoService {
 
     }    
 
+    // FUNZIONA --> funzione per il prelievo contanti dal conto 
+    async prelievoContanti(movimentoData: movimentoConto, importo: number){
+        if (movimentoData.saldo<importo){
+            throw new Error ("saldo insufficente");
+        }
+        
+        const saldoFinale = movimentoData.saldo - importo;
+        let categoria = await CategoryModel.findOne({ categoryName: 'Prelievo Contanti', categoryType : 'Uscita'});
+        
+        if (!categoria){
+            throw new Error ('categoria non trovata');
+        }
+        
+        const movimentoPrelievoContanti = {
+            contoCorrenteID: movimentoData.contoCorrenteID,
+             data: new Date(),
+            importo: importo,
+            saldo: saldoFinale,
+            categoriaMovimentoID: categoria._id,
+            descrizioneEstesa: 'Prelievo Contanti'
+        }
 
+        const newMovimento = await movimentoContoModel.create(movimentoPrelievoContanti);
 
-
+        if(!newMovimento){
+            throw new Error ("errore nella creazione del movimento")
+        }
+        return newMovimento;
+    }
 
 
 

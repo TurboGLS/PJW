@@ -13,7 +13,7 @@ router.get('/:id', movimentoContoController.getMovimentoContoById);
 router.get('/by-categoria', movimentoContoController.getMovimentiByCategoria);
 router.post('/ricarica-telefono', movimentoContoController.postRicarica);
 router.post('/pagamento-utenze', movimentoContoController.postPagamentoUtenze);
-
+router.post('/prelivo-contanti', movimentoContoController.postPrelievo);
 
 router.post('/bonifico-uscita', movimentoContoController.postBonificoUscita)
 
