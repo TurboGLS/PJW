@@ -1,0 +1,40 @@
+.main-container {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0px 20px 20px 0px;
+    border: 1px solid rgb(12,65,125);
+    padding: 20px;
+    padding-left: 20px;
+    padding-right: 25px;
+}
+
+.user-area {
+    margin: 57vh -25px -20px -20px;
+    padding: 20px;
+    padding-bottom: 17px;
+    border-top: 1px solid black;
+}
+
+.logo {
+    max-width: 200px;
+    margin-bottom: 30px;
+}
+
+.page-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    padding: 20px;
+    padding-left: 20px;
+    padding-right: 25px;
+    margin-left: -20px;
+    margin-right: -25px;
+    transition: color 750ms, background-color 200ms;
+}
+
+.page-button:hover {
+    color: rgb(12,65,125);
+    background-color: rgb(238, 246, 255);
+    transition: all 200ms;
+}
