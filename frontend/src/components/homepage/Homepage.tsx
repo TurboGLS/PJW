@@ -24,9 +24,10 @@ const homepage = () => {
         <Sidebar />
       </div>
       <div className={s["main-container__home"]}>
-        <div>Benvenuto/a!</div>
+        <div className={s["main-container__home__infos"]}>
+          <TotalBalance totalBalance={balance}></TotalBalance>
+        </div>
       </div>
-      <TotalBalance totalBalance={balance}></TotalBalance>
     </div>
   );
 };
