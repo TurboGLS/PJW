@@ -11,7 +11,7 @@ const movimentoContoService = new MovimentoContoService();
 export class MovimentoContoController {
     public async getMovimentoContoById(req: Request, res: Response): Promise<void> {
         try {
-            const { id } = req.params; 
+            const { id } = req.params;
             const movimento = await movimentoContoService.getMovimentoContoById(id);
 
             if (movimento) {
@@ -29,7 +29,7 @@ export class MovimentoContoController {
     public async getAllMovimentiConto(req: Request, res: Response): Promise<void> {
         try {
             const movimenti = await movimentoContoService.getAllMovimentiConto();
-            
+
             res.status(200).json(movimenti);
         } catch (error: any) {
             console.error("Errore nel controller getAllMovimentiConto:", error.message);
@@ -37,17 +37,39 @@ export class MovimentoContoController {
         }
     }
 
+    // FUNZIONA da pulire il dato in output
     public async getLimitedMovimentiConto(req: Request, res: Response): Promise<void> {
         try {
-            const limit = parseInt(req.query.limit as string);
+            const limit = parseInt(req.body.limit as string);
+            const email = req.user?.email;
 
             if (isNaN(limit) || limit <= 0) {
                 res.status(400).json({ message: "Il parametro 'limit' deve essere un numero intero positivo." });
                 return;
             }
 
-            const movimenti = await movimentoContoService.getLimitedMovimentiConto(limit);
-            res.status(200).json(movimenti);
+            if (!email) {
+                res.status(400).json({ message: "Il parametro 'email' è obbligatorio." });
+                return;
+            }
+
+            const contoCorrente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
+
+            if (!contoCorrente?.id) {
+                res.status(404).json({ message: 'Impossible trovare un contoCorrente correlato alla email inserita' });
+                return;
+            }
+
+            const movimenti = await movimentoContoService.getLimitedMovimentiConto(limit, contoCorrente.id);
+
+            const lastSaldo = await movimentoContoService.getLastOperationByContoId(contoCorrente.id);
+
+            if (!lastSaldo) {
+                res.status(400).json({ message: 'Ultimo saldo non trovato' });
+                return;
+            }
+
+            res.status(200).json({ movimenti, lastSaldo });
         } catch (error: any) {
             console.error("Errore nel controller getLimitedMovimentiConto:", error.message);
             res.status(500).json({ message: "Errore durante il recupero dei movimenti conto limitati.", error: error.message });
@@ -56,7 +78,7 @@ export class MovimentoContoController {
 
     public async getMovimentiByCategoria(req: Request, res: Response): Promise<void> {
         try {
-            const { categoriaId } = req.params; 
+            const { categoriaId } = req.params;
 
             if (!mongoose.Types.ObjectId.isValid(categoriaId)) {  // < - - - - - -  qui mi da un errore ma forse è un problema mio di una libreria che ho attiva 
                 res.status(400).json({ message: "ID categoria non valido." });
@@ -73,20 +95,20 @@ export class MovimentoContoController {
 
     // Bonifico 
     public async postBonificoUscita(req: Request, res: Response, next: NextFunction) {
-        try{
+        try {
             const email = req.user?.email;
-            const {ibanDestinatario, importo} = req.body;
+            const { ibanDestinatario, importo } = req.body;
 
-            if(!ibanDestinatario){
+            if (!ibanDestinatario) {
                 throw new Error("Iban non inserito")
             }
 
-            if(!importo){
+            if (!importo) {
                 throw new Error("importo non inserito")
             }
 
             if (!email) {
-                throw new Error ("Email non trovata")
+                throw new Error("Email non trovata")
             }
 
             const contoCorrenteMittente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
@@ -124,8 +146,8 @@ export class MovimentoContoController {
             }
 
             res.status(201).json(newMovimento);
-            
-        }catch (error){
+
+        } catch (error) {
             next(error);
         }
     }

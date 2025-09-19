@@ -3,11 +3,11 @@ import { movimentoConto } from "./movimentoConto.entity";
 
 
 const movimentoContoSchema = new Schema<movimentoConto>({
-    contoCorrenteID: { type: Schema.Types.ObjectId, ref: 'contoCorrenteModel', required: true  },
+    contoCorrenteID: { type: Schema.Types.ObjectId, ref: 'contoCorrente', required: true  },
     data: { type: Date },
     importo: { type: Number },
     saldo: { type: Number },
-    categoriaMovimentoID: { type: Schema.Types.ObjectId, ref: 'CategoryModel', required: true  },
+    categoriaMovimentoID: { type: Schema.Types.ObjectId, ref: 'Category', required: true  },
     descrizioneEstesa: { type: String }
 });
 

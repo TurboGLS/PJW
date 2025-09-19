@@ -34,7 +34,7 @@ export class ContoCorrenteService {
     public async getContoCorrenteByEmail(email: string): Promise<contoCorrente | null> {
         try {
             const contoCorrente = await contoCorrenteModel.findOne({ email: email });
-            return contoCorrente ? contoCorrente.toJSON() as contoCorrente : null;
+            return contoCorrente;
         } catch (error: any) {
             console.error(`[Service] Errore nel recupero del conto corrente con email ${email}:`, error);
             throw new Error(`Errore durante il recupero del conto corrente: ${error.message}`);

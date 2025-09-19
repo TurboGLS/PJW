@@ -35,16 +35,16 @@ export class MovimentoContoService {
     }
 
     // trova le operazioni limitate dal numero inserito
-    async getLimitedMovimentiConto(limit: number): Promise<movimentoConto[]> {
+    async getLimitedMovimentiConto(limit: number, contoCorrenteId: string): Promise<movimentoConto[]> {
         try {
             // Assicurati che il limite sia un numero positivo
             if (limit <= 0) {
                 throw new Error("Il limite deve essere un numero positivo.");
             }
 
-            const movimenti = await movimentoContoModel.find({})
-                .populate('contoCorrenteID')
-                .populate('categoriaMovimentoID')
+            const movimenti = await movimentoContoModel.find({ contoCorrenteID: contoCorrenteId })
+                .populate('contoCorrenteID', 'iban')
+                .populate('categoriaMovimentoID', 'categoryName')
                 .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
                 .limit(limit)       // <--- Qui applichiamo il limite
                 .lean();
@@ -78,8 +78,6 @@ export class MovimentoContoService {
             }
 
             const ultimaOperazione = await movimentoContoModel.findOne({ contoCorrenteID: contoCorrenteId })
-                .populate('contoCorrenteID')
-                .populate('categoriaMovimentoID')
                 .sort({ data: -1 }) // prendi il più recente
                 .lean();
 

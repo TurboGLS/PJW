@@ -10,7 +10,7 @@ export class TokenService {
         if (!user) {
             throw new Error('User not found');
         }
-        const token = jwt.sign(user, JWT_SECRET, { expiresIn: '15 minutes' });
+        const token = jwt.sign(user, JWT_SECRET, { expiresIn: '15 seconds' });
         const refreshToken = jwt.sign(user, JWT_SECRET, { expiresIn: '3 hours' });
         await this.assignTokenToUser(user.id!, refreshToken, oldToken);
         return {
