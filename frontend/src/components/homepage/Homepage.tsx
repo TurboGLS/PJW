@@ -36,11 +36,12 @@ const homepage = () => {
       <div className={s["main-container__sidebar-container"]}>
         <Sidebar />
       </div>
+
       <div className={s["main-container__home"]}>
         <div className={s["main-container__home__infos"]}>
           <TotalBalance totalBalance={balance}></TotalBalance>
         </div>
-        <h3>I TUOI MOVIMENTI</h3>
+
         <MovementsList movements={movements}></MovementsList>
       </div>
     </div>
