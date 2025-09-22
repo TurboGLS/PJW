@@ -1,7 +1,5 @@
+import type { Movements } from "./movements.entity";
+
 export type BalanceMovements = {
-  movimenti: [
-    {
-      saldo: number;
-    }
-  ];
+  movimenti: Movements[];
 };
