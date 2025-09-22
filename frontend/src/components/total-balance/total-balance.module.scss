@@ -4,8 +4,9 @@
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   padding: 50px;
-  border-radius: 25px;
+  border-radius: 100px;
   background-color: rgb(253, 150, 25);
+  min-width: 130px;
 
   &__message {
     display: flex;
@@ -18,5 +19,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    p {
+      font-family: "Quicksand", sans-serif;
+      font-weight: 500;
+    }
   }
 }
