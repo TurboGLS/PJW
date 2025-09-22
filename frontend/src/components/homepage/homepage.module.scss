@@ -5,8 +5,10 @@
   &__home {
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    width: 70vw;
+    align-items: center;
+    flex-direction: column;
+    width: 100vw;
+    gap: 5rem;
 
     &__infos {
       display: flex;
