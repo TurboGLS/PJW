@@ -7,6 +7,7 @@ import AuthGuard from "./utils/auth.guard";
 import { AuthProvider } from "./contexts/auth.context";
 import IsLoggedGuard from "./utils/isLogged.guard";
 import ProfilePage from "./components/profile-page/profile-page";
+import PhoneRecharge from "./components/phone-recharge/phone-recharge";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +46,14 @@ const router = createBrowserRouter([
         element: (
           <AuthGuard>
             <ProfilePage />
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/phone-top-up",
+        element: (
+          <AuthGuard>
+            <PhoneRecharge />
           </AuthGuard>
         ),
       },
