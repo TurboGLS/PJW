@@ -3,11 +3,11 @@
   flex-direction: column;
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
     rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-  padding: 60px;
-  border-radius: 100px;
+  padding: 1rem 15rem;
   background-color: rgb(253, 150, 25);
-  min-width: 130px;
-  gap: 3rem;
+  box-shadow: 10px 10px 0px 0px rgba(255, 188, 106, 0.75);
+  -webkit-box-shadow: 10px 10px 0px 0px rgba(255, 188, 106, 0.75);
+  -moz-box-shadow: 10px 10px 0px 0px rgba(255, 188, 106, 0.75);
 
   &__message {
     display: flex;
@@ -18,11 +18,9 @@
 
   &__balance {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    p {
-      font-family: "Quicksand", sans-serif;
-      font-weight: 500;
-    }
+    color: white;
   }
 }

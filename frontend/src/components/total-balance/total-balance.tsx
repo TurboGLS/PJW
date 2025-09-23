@@ -1,16 +1,17 @@
 import type { BalanceMovements } from "../../entities/balance-movements";
 import s from "./total-balance.module.scss";
-import sun from "../../assets/sun-fill.svg";
+import type { BankAccount } from "../../entities/bank-account";
 
 interface TotalBalanceProps {
   totalBalance: BalanceMovements;
+  bankAccount: BankAccount;
 }
 
-const TotalBalance = ({ totalBalance }: TotalBalanceProps) => {
+const TotalBalance = ({ totalBalance, bankAccount }: TotalBalanceProps) => {
   return (
     <div className={s["main-container"]}>
-      <img src={sun} />
       <div className={s["main-container__balance"]}>
+        <h3>Ciao, {bankAccount.nomeTitolare}</h3>
         <h2>{totalBalance.lastSaldo.saldo}$</h2>
       </div>
     </div>
