@@ -8,15 +8,9 @@ interface MovementCardProps {
 }
 
 const MovementCard = ({ movement }: MovementCardProps) => {
-  const bonificoInUscitaIMG = "Bonifico in uscita";
   return (
     <div className={s["main-container"]}>
       <div className={s["main-container__wrap"]}>
-        {movement.descrizioneEstesa === bonificoInUscitaIMG ? (
-          <div>Ciao</div>
-        ) : (
-          <div>papere</div>
-        )}
         <div>{movement.descrizioneEstesa}</div>
         <div>{movement.importo}$</div>
       </div>
