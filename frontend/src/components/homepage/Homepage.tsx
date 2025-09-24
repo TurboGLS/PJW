@@ -46,7 +46,6 @@ const homepage = () => {
             bankAccount={user}
           ></TotalBalance>
         </div>
-
         <MovementsList movements={movements}></MovementsList>
       </div>
     </div>

@@ -11,13 +11,14 @@
     background-image: url("../../assets/wave-light.svg");
     background-repeat: no-repeat;
     background-size: cover;
+    gap: 5rem;
 
     &__infos {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: start;
-      margin-top: 15rem;
+      margin-top: 5rem;
     }
 
     &__icon {

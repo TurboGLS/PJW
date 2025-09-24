@@ -7,6 +7,18 @@ class MovementService {
     );
     return response;
   }
+
+  async sendWireTransfer(
+    importo: number,
+    ibanDestinatario: string,
+    causale: string
+  ) {
+    const response = await authAxiosInstance.post(
+      "/api/movimentoConto/bonifico-uscita",
+      { importo, ibanDestinatario, causale }
+    );
+    return response;
+  }
 }
 
 const movementService = new MovementService();
