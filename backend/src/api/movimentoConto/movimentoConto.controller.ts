@@ -79,7 +79,7 @@ export class MovimentoContoController {
     // FIXING
     public async getMovimentiByCategoria(req: Request, res: Response) {
         try {
-            const limit = parseInt(req.body.limit as string);
+            const limit = parseInt(req.query.limit as string);
             const email = req.user?.email;
             const categoryName = req.body.categoryName as string;
             const categoryType = req.body.categoryType as string;
