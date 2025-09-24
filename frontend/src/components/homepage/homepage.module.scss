@@ -3,7 +3,7 @@
   min-height: 100vh;
 
   &__home {
-    min-height: 50vh;
+    max-height: 100vh;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -11,7 +11,7 @@
     background-image: url("../../assets/wave-light.svg");
     background-repeat: no-repeat;
     background-size: cover;
-    gap: 5rem;
+    gap: 1.5rem;
 
     &__infos {
       display: flex;

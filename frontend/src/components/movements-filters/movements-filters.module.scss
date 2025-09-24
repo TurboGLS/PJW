@@ -1,0 +1,33 @@
+.main-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 50px;
+
+  &__limit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    select {
+      border: none;
+      background-color: white;
+      padding: 0.2rem;
+      border-radius: 5px;
+    }
+  }
+
+  &__download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button {
+      border: none;
+      background-color: white;
+    }
+  }
+}

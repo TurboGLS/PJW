@@ -7,11 +7,32 @@ import movementService from "../../services/movements.service";
 import type { Movements } from "../../entities/movements.entity";
 import type { BankAccount } from "../../entities/bank-account";
 import bankAccountService from "../../services/bank-account.service";
+import MovementsFilters from "../movements-filters/movements-filters";
+
+const LIMIT = 5;
 
 const homepage = () => {
   const [balance, setBalance] = useState();
   const [movements, setMovements] = useState<Movements[]>();
   const [user, setUser] = useState<BankAccount | null>();
+  const [limit, setLimit] = useState(LIMIT);
+  const [categoryName, setCategoryName] = useState("");
+
+  const onLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLimit = parseInt(e.target.value);
+    setLimit(newLimit);
+    movementService.fetchLimitedMovements(newLimit).then((response) => {
+      setMovements(response.data.movimenti);
+    });
+  };
+
+  const onCatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedCat = e.target.value;
+    setCategoryName(selectedCat);
+    movementService.fetchMovementsByCat(limit, selectedCat).then((response) => {
+      setMovements(response.data.movimenti);
+    });
+  };
 
   const fetchUserInfo = async () => {
     const userInfo = await bankAccountService.fetchBankAccountInfo();
@@ -27,11 +48,12 @@ const homepage = () => {
     setMovements(response.data.movimenti);
     console.log(movements);
   };
+
   useEffect(() => {
     fetchTotalBalance();
     fetchMovements();
     fetchUserInfo();
-  }, [TotalBalance]);
+  }, [TotalBalance, categoryName]);
 
   if (!movements || !balance || !user) {
     return;
@@ -46,6 +68,13 @@ const homepage = () => {
             bankAccount={user}
           ></TotalBalance>
         </div>
+        <MovementsFilters
+          movements={movements}
+          limit={limit}
+          onChange={onLimitChange}
+          onCatChange={onCatChange}
+          categoryName={categoryName}
+        ></MovementsFilters>
         <MovementsList movements={movements}></MovementsList>
       </div>
     </div>
