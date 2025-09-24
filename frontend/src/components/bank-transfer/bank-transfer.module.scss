@@ -1,5 +1,4 @@
 .main-container {
-    display: flex;
     height: 100vh;
     background-image: url(../../assets/wave-light.svg);
     background-size: cover;
@@ -12,12 +11,64 @@
     align-items: center;
     justify-content: center;
     margin: auto;
-    height: 50vh;
+    width: 100%;
+    height: 80%;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 30px;
+    padding: 25px;
+    padding-right: 0px;
 }
 
 .form {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    background-color: white;
+    padding: 50px 60px;
+    font-size: 22px;
+    border: 1px solid rgb(207, 207, 207);
+    box-shadow: 10px 10px 0px #96acc4;
+    border-radius: 25px;
+
+    label {
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    input {
+        font-size: 18px;
+        padding: 5px;
+        margin-bottom: 10px;
+        border: 1px solid rgb(207, 207, 207);
+        border-radius: 10px;
+    }
+
+    .submit-button {
+        font-weight: 600;
+        background-color: rgb(77,86,128);
+        color: white;
+        border: none;
+        padding: 10px;
+        margin-top: 20px;
+        margin-bottom: 0px;
+        transition: background-color 200ms;
+    }
+
+    .submit-button:hover {
+        background-color: rgb(90, 101, 150);
+        transition: all 200ms
+    }
+
+    .submit-button:active {
+        background-color: rgb(60, 67, 100);
+    }
+}
+
+.error-msg {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-size: 18px;
 }

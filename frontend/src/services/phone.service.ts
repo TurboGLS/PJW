@@ -16,6 +16,21 @@ class PhoneService {
       return e;
     }
   }
+
+  async getPhoneOperators() {
+    try {
+      const operators = authAxiosInstance.get(
+        "/api/phoneOperators/allOperators"
+      );
+      return operators;
+    } catch (e: any) {
+      console.log(
+        "There was an error at getPhoneOperators in PhoneService " +
+          e.error.message
+      );
+      return e;
+    }
+  }
 }
 
 const phoneSrv = new PhoneService();
