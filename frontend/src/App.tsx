@@ -9,6 +9,7 @@ import IsLoggedGuard from "./utils/isLogged.guard";
 import ProfilePage from "./components/profile-page/profile-page";
 import PhoneRecharge from "./components/phone-recharge/phone-recharge";
 import Sidebar from "./components/sidebar/sidebar";
+import BankTransfer from "./components/bank-transfer/bank-transfer";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="main-layout">
@@ -71,6 +72,16 @@ const router = createBrowserRouter([
           <AuthGuard>
             <AppLayout>
               <PhoneRecharge />
+            </AppLayout>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: "/bank-transfer",
+        element: (
+          <AuthGuard>
+            <AppLayout>
+              <BankTransfer />
             </AppLayout>
           </AuthGuard>
         ),

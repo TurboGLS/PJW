@@ -1,0 +1,23 @@
+.main-container {
+    display: flex;
+    height: 100vh;
+    background-image: url(../../assets/wave-light.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    height: 50vh;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
