@@ -1,0 +1,10 @@
+name: my-app
+services:
+  - name: backend
+    git:
+      branch: main
+      path: backend
+    build:
+      command: npm install
+    run:
+      command: npm start
