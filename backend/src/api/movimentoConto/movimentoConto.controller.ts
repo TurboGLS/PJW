@@ -357,8 +357,62 @@ export class MovimentoContoController {
             }
 
             res.status(201).json(newMovimento);
-        } catch (error) {
-            next(error);
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    public async lastMovimentiBetweenDates(req: Request, res: Response, next: NextFunction) {
+        try {
+            const limit = parseInt(req.query.limit as string);
+            const email = req.user?.email;
+            const { dataInizio, dataFine } = req.body;
+
+            if (!limit || limit <= 0) {
+                res.status(400).json('Limite operazioni inserito incorretto');
+                return;
+            }
+
+            if (!email) {
+                res.status(400).json(`Impposibile recuperare le informazioni associate alla email ${email}`);
+                return;
+            }
+
+            if (!dataInizio || !dataFine) {
+                res.status(400).json('Date inserite non valide');
+                return;
+            }
+
+            const startDate = new Date(dataInizio);
+            const endDate = new Date(dataFine);
+
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                res.status(400).json({ message: 'Formato data non valido. Usa un formato ISO valido (es. YYYY-MM-DD).' });
+                return;
+            }
+
+            const contoCorrenteId = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
+
+            if (!contoCorrenteId?.id) {
+                res.status(400).json(`Impossibile trovare il conto corrente associato alla email ${email}`);
+                return;
+            }
+
+            const lastMovimentiDates = await movimentoContoService.getLimitedMovimentiBetweenDates(contoCorrenteId.id, startDate, endDate, limit);
+
+            if (!lastMovimentiDates) {
+                res.status(400).json(`Impossibile trovare gli ultimi movimenti tra data ${dataInizio} e ${dataFine}`);
+                return;
+            }
+
+            if (!lastMovimentiDates || lastMovimentiDates.length === 0) {
+                res.status(404).json({ message: `Nessuna operazione trovata tra le date ${dataInizio} e ${dataFine}` });
+                return;
+            }
+
+            res.status(200).json(lastMovimentiDates);
+        } catch (err) {
+            next(err);
         }
     }
 }
