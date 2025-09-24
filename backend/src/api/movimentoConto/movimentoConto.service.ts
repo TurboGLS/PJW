@@ -257,7 +257,7 @@ export class MovimentoContoService {
     }
 
     // TO FIX
-    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto, importo: number) {
+    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto, importo: number, casuale?: string) {
 
         const saldoDisponibile = movimentoDataMittente.saldo;
         const saldoDestinatario = movimentoDataDestinatario.saldo;
@@ -285,7 +285,7 @@ export class MovimentoContoService {
             importo: importo,
             saldo: saldoFinaleMittente,
             categoriaMovimentoID: categoriaUscita._id,
-            descrizioneEstesa: `Bonifico in uscita`
+            descrizioneEstesa: `Bonifico in uscita, ${casuale}`
         }
         const movimentoBonificoDestinatario = {
             contoCorrenteID: movimentoDataDestinatario.contoCorrenteID,
@@ -293,7 +293,7 @@ export class MovimentoContoService {
             importo: importo,
             saldo: saldoFinaleDestinatario,
             categoriaMovimentoID: categoriaEntrata._id,
-            descrizioneEstesa: 'Bonifico in entrata'
+            descrizioneEstesa: `Bonifico in entrata, ${casuale}`
         }
 
 

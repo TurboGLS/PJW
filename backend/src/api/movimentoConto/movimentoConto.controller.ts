@@ -298,7 +298,7 @@ export class MovimentoContoController {
     public async postBonificoUscita(req: Request, res: Response, next: NextFunction) {
         try {
             const email = req.user?.email;
-            const { ibanDestinatario, importo } = req.body;
+            const { ibanDestinatario, importo, casuale } = req.body;
 
             if (!ibanDestinatario) {
                 res.status(400).json({ message: "Iban non inserito" });
@@ -349,7 +349,7 @@ export class MovimentoContoController {
                 return;
             }
 
-            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario, importo);
+            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario, importo, casuale);
 
             if (!newMovimento) {
                 res.status(500).json({ message: "Errore nella creazione del movimento" });
