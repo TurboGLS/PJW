@@ -8,6 +8,18 @@ import { AuthProvider } from "./contexts/auth.context";
 import IsLoggedGuard from "./utils/isLogged.guard";
 import ProfilePage from "./components/profile-page/profile-page";
 import PhoneRecharge from "./components/phone-recharge/phone-recharge";
+import Sidebar from "./components/sidebar/sidebar";
+
+const AppLayout = ({ children }: { children: React.ReactNode }) => (
+  <div className="main-layout">
+    <div className="sidebar">
+      <Sidebar />
+    </div>
+    <div className="content">
+      {children}
+    </div>
+  </div>
+);
 
 const router = createBrowserRouter([
   {
@@ -37,7 +49,9 @@ const router = createBrowserRouter([
         path: "/homepage",
         element: (
           <AuthGuard>
-            <Homepage />
+            <AppLayout>
+              <Homepage />
+            </AppLayout>
           </AuthGuard>
         ),
       },
@@ -45,15 +59,19 @@ const router = createBrowserRouter([
         path: "/profile",
         element: (
           <AuthGuard>
-            <ProfilePage />
+            <AppLayout>
+              <ProfilePage />
+            </AppLayout>
           </AuthGuard>
         ),
       },
       {
-        path: "/phone-top-up",
+        path: "/phone",
         element: (
           <AuthGuard>
-            <PhoneRecharge />
+            <AppLayout>
+              <PhoneRecharge />
+            </AppLayout>
           </AuthGuard>
         ),
       },

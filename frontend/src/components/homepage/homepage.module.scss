@@ -8,7 +8,7 @@
     align-items: center;
     flex-direction: column;
     width: 100vw;
-    background-image: url("../../assets/wave-haikei\(1\).svg");
+    background-image: url("../../assets/wave-light.svg");
     background-repeat: no-repeat;
     background-size: cover;
 
@@ -29,9 +29,5 @@
       border-radius: 50px;
       padding: 1rem;
     }
-  }
-
-  &__sidebar-container {
-    max-width: 40vw;
   }
 }

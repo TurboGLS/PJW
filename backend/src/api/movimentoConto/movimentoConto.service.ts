@@ -141,7 +141,7 @@ export class MovimentoContoService {
             throw new Error('saldo insufficiente');
         }
 
-        const saldoFinale = movimentoData.saldo -importo;
+        const saldoFinale = movimentoData.saldo - importo;
 
         let categoria = await CategoryModel.findOne({ categoryName: 'Ricarica', categoryType: 'Uscita' });
 
@@ -169,16 +169,16 @@ export class MovimentoContoService {
 
 
     // FUNZIONA  -->  funzione per gagamento delle utenze 
-    async pagamentoUtenze(movimentoData: movimentoConto, importo: number){
-        if (movimentoData.saldo<importo){
-            throw new Error ("saldo insufficente");
+    async pagamentoUtenze(movimentoData: movimentoConto, importo: number) {
+        if (movimentoData.saldo < importo) {
+            throw new Error("saldo insufficente");
         }
 
         const saldoFinale = movimentoData.saldo - importo;
-        let categoria = await CategoryModel.findOne({ categoryName: 'Pagamento Utenze', categoryType : 'Uscita'});
+        let categoria = await CategoryModel.findOne({ categoryName: 'Pagamento Utenze', categoryType: 'Uscita' });
 
-        if (!categoria){
-            throw new Error ('categoria non trovata');
+        if (!categoria) {
+            throw new Error('categoria non trovata');
         }
 
         const movPagamentoUtenze = {
@@ -192,29 +192,29 @@ export class MovimentoContoService {
 
         const newMovimento = await movimentoContoModel.create(movPagamentoUtenze);
 
-        if(!newMovimento){
-            throw new Error ("errore nella creazione del movimento")
+        if (!newMovimento) {
+            throw new Error("errore nella creazione del movimento")
         }
         return newMovimento;
 
-    }    
+    }
 
     // FUNZIONA --> funzione per il prelievo contanti dal conto 
-    async prelievoContanti(movimentoData: movimentoConto, importo: number){
-        if (movimentoData.saldo<importo){
-            throw new Error ("saldo insufficente");
+    async prelievoContanti(movimentoData: movimentoConto, importo: number) {
+        if (movimentoData.saldo < importo) {
+            throw new Error("saldo insufficente");
         }
-        
+
         const saldoFinale = movimentoData.saldo - importo;
-        let categoria = await CategoryModel.findOne({ categoryName: 'Prelievo Contanti', categoryType : 'Uscita'});
-        
-        if (!categoria){
-            throw new Error ('categoria non trovata');
+        let categoria = await CategoryModel.findOne({ categoryName: 'Prelievo Contanti', categoryType: 'Uscita' });
+
+        if (!categoria) {
+            throw new Error('categoria non trovata');
         }
-        
+
         const movimentoPrelievoContanti = {
             contoCorrenteID: movimentoData.contoCorrenteID,
-             data: new Date(),
+            data: new Date(),
             importo: importo,
             saldo: saldoFinale,
             categoriaMovimentoID: categoria._id,
@@ -223,20 +223,20 @@ export class MovimentoContoService {
 
         const newMovimento = await movimentoContoModel.create(movimentoPrelievoContanti);
 
-        if(!newMovimento){
-            throw new Error ("errore nella creazione del movimento")
+        if (!newMovimento) {
+            throw new Error("errore nella creazione del movimento")
         }
         return newMovimento;
     }
 
     // FUNZIONA: funzione per il versamento on il bancomat
-    async versamentoBancomat(movimentoData: movimentoConto, importo: number){
-        
-        const saldoFinale = movimentoData.saldo + importo;
-        let categoria = await CategoryModel.findOne({ categoryName: 'Versamento Bancomat', categoryType : 'Entrata'});
+    async versamentoBancomat(movimentoData: movimentoConto, importo: number) {
 
-        if (!categoria){
-            throw new Error ('categoria non trovata');
+        const saldoFinale = movimentoData.saldo + importo;
+        let categoria = await CategoryModel.findOne({ categoryName: 'Versamento Bancomat', categoryType: 'Entrata' });
+
+        if (!categoria) {
+            throw new Error('categoria non trovata');
         }
 
         const movRicarica = {
@@ -250,14 +250,14 @@ export class MovimentoContoService {
 
         const newMovimento = await movimentoContoModel.create(movRicarica);
 
-        if(!newMovimento){
-            throw new Error ("errore durante la ricarica")
+        if (!newMovimento) {
+            throw new Error("errore durante la ricarica")
         }
         return newMovimento;
     }
 
     // TO FIX
-    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto, importo: number) {
+    async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto, importo: number, casuale?: string) {
 
         const saldoDisponibile = movimentoDataMittente.saldo;
         const saldoDestinatario = movimentoDataDestinatario.saldo;
@@ -280,20 +280,20 @@ export class MovimentoContoService {
             throw new Error('categoria non trovata');
         }
         const movimentoBonificoMittente = {
-            contoCorrenteID: movimentoDataMittente.contoCorrenteID,    
+            contoCorrenteID: movimentoDataMittente.contoCorrenteID,
             data: new Date(),
             importo: importo,
             saldo: saldoFinaleMittente,
             categoriaMovimentoID: categoriaUscita._id,
-            descrizioneEstesa: `Bonifico in uscita`
+            descrizioneEstesa: `Bonifico in uscita, ${casuale}`
         }
         const movimentoBonificoDestinatario = {
-            contoCorrenteID: movimentoDataDestinatario.contoCorrenteID,  
+            contoCorrenteID: movimentoDataDestinatario.contoCorrenteID,
             data: new Date(),
             importo: importo,
             saldo: saldoFinaleDestinatario,
             categoriaMovimentoID: categoriaEntrata._id,
-            descrizioneEstesa: 'Bonifico in entrata'
+            descrizioneEstesa: `Bonifico in entrata, ${casuale}`
         }
 
 
@@ -313,13 +313,42 @@ export class MovimentoContoService {
         };
 
 
-        if (!bonificoCompleto){
+        if (!bonificoCompleto) {
             throw new Error("errore nella generazione del output");
         }
 
         return bonificoCompleto;
+    }
 
-    }   
+    async getLimitedMovimentiBetweenDates(contoCorrenteId: mongoose.ObjectId | string, dataInizio: Date, dataFine: Date, limit: number): Promise<movimentoConto[] | null> {
+        try {
+            if (!contoCorrenteId) {
+                throw new Error("È necessario fornire un contoCorrenteId valido.");
+            }
+            if (!dataInizio || !dataFine) {
+                throw new Error("È necessario fornire sia dataInizio che dataFine.");
+            }
+            if (!limit || limit <= 0) {
+                throw new Error("È necessario fornire un limite > 0.");
+            }
+
+            const movimenti = await movimentoContoModel.find({
+                contoCorrenteID: contoCorrenteId,
+                data: {
+                    $gte: dataInizio,
+                    $lte: dataFine,
+                },
+            })
+                .sort({ data: -1 }) // più recenti prima
+                .limit(limit)
+                .lean();
+
+            return movimenti;
+        } catch (error: any) {
+            console.error(`Errore durante il recupero dei movimenti per contoCorrenteId ${contoCorrenteId}:`, error.message);
+            throw new Error(`Impossibile recuperare i movimenti: ${error.message}`);
+        }
+    }
 }
 
 export default new MovimentoContoService;
