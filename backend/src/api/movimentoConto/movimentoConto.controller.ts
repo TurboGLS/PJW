@@ -120,6 +120,11 @@ export class MovimentoContoController {
 
             const movimenti = await movimentoContoService.getMovimentiByCategoria(limit, contoCorrente.id, categoryId);
 
+            if (!movimenti || movimenti.length === 0) {
+                res.status(200).json({ message: 'Nessun movimento trovato per questa categoria.' });
+                return;
+            }
+
             res.status(200).json(movimenti);
         } catch (error: any) {
             console.error("Errore nel controller getLimitedMovimentiConto:", error.message);
@@ -415,7 +420,7 @@ export class MovimentoContoController {
                     "Importo non inserito"
                 );
                 return;
-            }            
+            }
 
             const contoCorrenteMittente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
             const contoCorrenteDestinatario = await ContoCorrenteSrv.getContoCorrenteByIban(ibanDestinatario);
