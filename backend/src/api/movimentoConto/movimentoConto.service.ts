@@ -45,7 +45,7 @@ export class MovimentoContoService {
 
             const movimenti = await movimentoContoModel.find({ contoCorrenteID: contoCorrenteId })
                 .populate('contoCorrenteID', 'iban')
-                .populate('categoriaMovimentoID', 'categoryName')
+                .populate('categoriaMovimentoID', 'categoryName categoryType')
                 .sort({ data: -1 }) // Ordine decrescente per data (più recenti per primi)
                 .limit(limit)       // <--- Qui applichiamo il limite
                 .lean();
