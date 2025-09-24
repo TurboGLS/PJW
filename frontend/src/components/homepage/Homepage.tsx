@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import balanceService from "../../services/balance.service";
-import Sidebar from "../sidebar/sidebar";
 import s from "./homepage.module.scss";
 import TotalBalance from "../total-balance/total-balance";
 import MovementsList from "../movements-list/movements-list";
