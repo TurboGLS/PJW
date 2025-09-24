@@ -9,7 +9,6 @@ import { mdiMenu } from '@mdi/js';
 import { mdiHomeCityOutline } from '@mdi/js';
 import { mdiBank } from '@mdi/js';
 import { mdiCellphoneArrowDownVariant } from '@mdi/js';
-import { mdiCashMultiple } from '@mdi/js';
 import { useNavigate } from "react-router";
 
 const Sidebar = () => {
@@ -56,10 +55,6 @@ const Sidebar = () => {
       <div className={s["page-button"]} onClick={() => redirect("/phone")}>
         <Icon path={mdiCellphoneArrowDownVariant} size={1} />
         <label>Ricarica Telefonica</label>
-      </div>
-      <div className={s["page-button"]}>
-        <Icon path={mdiCashMultiple} size={1} />
-        <label>Saldo</label>
       </div>
       { 
         !collapsed ? 
