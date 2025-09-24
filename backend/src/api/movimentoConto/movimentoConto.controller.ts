@@ -379,7 +379,7 @@ export class MovimentoContoController {
             const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
 
             const email = req.user?.email;
-            const { ibanDestinatario, importo, casuale } = req.body;
+            const { ibanDestinatario, importo, casuale: causale } = req.body;
 
             if (!email) {
                 res.status(400).json({ message: "Email non trovata" });
@@ -493,7 +493,7 @@ export class MovimentoContoController {
                 return;
             }
 
-            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario, importo, casuale);
+            const newMovimento = await movimentoContoService.bonificoUscita(lastMovimentoMittente, lastMovimentoDestinatario, importo, causale);
 
             if (!newMovimento) {
                 res.status(500).json({ message: "Errore nella creazione del movimento" });
