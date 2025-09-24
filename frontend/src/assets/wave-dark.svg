@@ -1,0 +1,10 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+	<defs>
+		<image  width="900" height="600" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA4QAAAJYAQMAAAAAC7qYAAAAAXNSR0IB2cksfwAAAANQTFRFCkSA00CxLQAAAQNJREFUeJztzQEJAAAMA6Cvf+m3GAy0gLm2GI1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0Go1Go9FoNBqNRqPRaDQajUaj0Wg0To0Pv24CWR+lx84AAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+		.s0 { fill: #b9daff } 
+	</style>
+	<use  href="#img1" x="0" y="0"/>
+	<path class="s0" d="m0 439l21.5-1.2c21.5-1.1 64.5-3.5 107.3-2.5 42.9 1 85.5 5.4 128.4 0.2 42.8-5.2 85.8-19.8 128.6-25.3 42.9-5.5 85.5-1.9 128.4-6.2 42.8-4.3 85.8-16.7 128.6-17.5 42.9-0.8 85.5 9.8 128.4 15.2 42.8 5.3 85.8 5.3 107.3 5.3h21.5v194h-21.5c-21.5 0-64.5 0-107.3 0-42.9 0-85.5 0-128.4 0-42.8 0-85.8 0-128.6 0-42.9 0-85.5 0-128.4 0-42.8 0-85.8 0-128.6 0-42.9 0-85.5 0-128.4 0-42.8 0-85.8 0-107.3 0h-21.5z"/>
+</svg>
