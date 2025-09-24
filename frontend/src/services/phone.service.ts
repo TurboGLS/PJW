@@ -1,7 +1,8 @@
 import { authAxiosInstance } from "../lib/axios";
+import { type Value } from "react-phone-number-input/input";
 
 class PhoneService {
-  async phoneRecharge(importo: number, numeroTelefono: string) {
+  async phoneRecharge(importo: number, numeroTelefono: Value | undefined) {
     try {
       const pRecharge = authAxiosInstance.post(
         "/api/movimentoConto/ricarica-telefono",
