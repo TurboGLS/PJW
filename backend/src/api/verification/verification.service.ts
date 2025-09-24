@@ -40,7 +40,7 @@ export async function sendVerificationEmail(to: string, url: string) {
     });
 
     await transporter.sendMail({
-        from: `"MH-Support" <${process.env.EMAIL_USER}>`,
+        from: `"Intesa Mario Volpato" <${process.env.EMAIL_USER}>`,
         to,
         subject: 'Verifica la tua email',
         html: `
