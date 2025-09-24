@@ -134,7 +134,7 @@ export class MovimentoContoController {
             const { importo, numeroTelefono } = req.body;
 
             if (!importo) {
-                res.status(400).json({ message: 'Importo mancane' });
+                res.status(400).json({ message: 'Importo mancante' });
                 return;
             }
 
