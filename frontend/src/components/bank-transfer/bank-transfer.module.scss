@@ -54,5 +54,21 @@
         padding: 10px;
         margin-top: 20px;
         margin-bottom: 0px;
+        transition: background-color 200ms;
     }
+
+    .submit-button:hover {
+        background-color: rgb(90, 101, 150);
+        transition: all 200ms
+    }
+
+    .submit-button:active {
+        background-color: rgb(60, 67, 100);
+    }
+}
+
+.error-msg {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    font-size: 18px;
 }
