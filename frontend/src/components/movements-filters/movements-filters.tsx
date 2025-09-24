@@ -12,7 +12,8 @@ interface MovementsFiltersProps {
   limit: number;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   onCatChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  categoryName?: string;
+  categoryName: string;
+  categoryType: string;
 }
 
 const MovementsFilters = ({
@@ -21,6 +22,7 @@ const MovementsFilters = ({
   onChange,
   onCatChange,
   categoryName,
+  categoryType,
 }: MovementsFiltersProps) => {
   const csvData = [
     ["ID Movimento", "Importo", "Data", "Categoria", "Descrizione"],
@@ -32,12 +34,15 @@ const MovementsFilters = ({
     ]),
   ];
 
-  const [categories, setCategories] = useState<Category[]>();
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const getAllCategories = async () => {
     const cat = await movementService.getAllcategories();
-    setCategories(cat.data);
-    return cat;
+    if (Array.isArray(cat.data)) {
+      setCategories(cat.data);
+    } else {
+      setCategories([]);
+    }
   };
 
   useEffect(() => {
@@ -61,12 +66,21 @@ const MovementsFilters = ({
           </select>
         </div>
         <div className={s["main-container__category"]}>
-          <select onChange={onCatChange} value={categoryName}>
-            {categories.map((category, index) => (
-              <option key={index} value={category.categoryName}>
-                {category.categoryName}
-              </option>
-            ))}
+          <select
+            onChange={onCatChange}
+            value={categoryName + "|" + categoryType}
+          >
+            {categories.length > 0 &&
+              categories.map((category, index) =>
+                category ? (
+                  <option
+                    key={index}
+                    value={`${category.categoryName}|${category.categoryType}`}
+                  >
+                    {category.categoryName} ({category.categoryType})
+                  </option>
+                ) : null
+              )}
           </select>
         </div>
         <div className={s["main-container__download"]}>

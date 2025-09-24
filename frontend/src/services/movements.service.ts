@@ -27,9 +27,13 @@ class MovementService {
     return response;
   }
 
-  async fetchMovementsByCat(limit: number, categoryName: string) {
+  async fetchMovementsByCat(
+    limit: number,
+    categoryName: string,
+    categoryType: string
+  ) {
     const response = await authAxiosInstance.get(
-      `/api/movimentoConto/by-categoria?limit=${limit}&categoryName=${categoryName}`
+      `/api/movimentoConto/by-categoria?limit=${limit}&categoryName=${categoryName}&categoryType=${categoryType}`
     );
     return response;
   }

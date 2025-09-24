@@ -17,6 +17,7 @@ const homepage = () => {
   const [user, setUser] = useState<BankAccount | null>();
   const [limit, setLimit] = useState(LIMIT);
   const [categoryName, setCategoryName] = useState("");
+  const [categoryType, setCategoryType] = useState("");
 
   const onLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLimit = parseInt(e.target.value);
@@ -27,12 +28,15 @@ const homepage = () => {
   };
 
   const onCatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedCat = e.target.value;
-    setCategoryName(selectedCat);
-    movementService.fetchMovementsByCat(limit, selectedCat).then((response) => {
+  const [selectedName, selectedType] = e.target.value.split("|");
+  setCategoryName(selectedName);
+  setCategoryType(selectedType);
+  movementService
+    .fetchMovementsByCat(limit, selectedName, selectedType)
+    .then((response) => {
       setMovements(response.data.movimenti);
     });
-  };
+};
 
   const fetchUserInfo = async () => {
     const userInfo = await bankAccountService.fetchBankAccountInfo();
@@ -74,6 +78,7 @@ const homepage = () => {
           onChange={onLimitChange}
           onCatChange={onCatChange}
           categoryName={categoryName}
+          categoryType={categoryType}
         ></MovementsFilters>
         <MovementsList movements={movements}></MovementsList>
       </div>
