@@ -40,10 +40,6 @@ const homepage = () => {
 
   return (
     <div className={s["main-container"]}>
-      <div className={s["main-container__sidebar-container"]}>
-        <Sidebar />
-      </div>
-
       <div className={s["main-container__home"]}>
         <div className={s["main-container__home__infos"]}>
           <TotalBalance
