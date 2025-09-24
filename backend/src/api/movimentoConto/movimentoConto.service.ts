@@ -285,7 +285,7 @@ export class MovimentoContoService {
             importo: importo,
             saldo: saldoFinaleMittente,
             categoriaMovimentoID: categoriaUscita._id,
-            descrizioneEstesa: `Bonifico in uscita, ${causale || null}`
+            descrizioneEstesa: `Bonifico in uscita, ${causale || ''}`
         }
         const movimentoBonificoDestinatario = {
             contoCorrenteID: movimentoDataDestinatario.contoCorrenteID,
@@ -293,7 +293,7 @@ export class MovimentoContoService {
             importo: importo,
             saldo: saldoFinaleDestinatario,
             categoriaMovimentoID: categoriaEntrata._id,
-            descrizioneEstesa: `Bonifico in entrata, ${causale || null}`
+            descrizioneEstesa: `Bonifico in entrata, ${causale || ''}`
         }
 
 
