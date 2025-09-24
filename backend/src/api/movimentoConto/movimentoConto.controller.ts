@@ -4,7 +4,7 @@ import { movimentoContoModel } from './movimentoConto.model'; // Assicurati che 
 import { movimentoConto } from './movimentoConto.entity';
 import mongoose from 'mongoose';
 import ContoCorrenteSrv from '../contoCorrente/contoCorrente.service';
-
+import operationLogSrv from "../ipTracking/ipTracking.service";
 
 const movimentoContoService = new MovimentoContoService();
 
@@ -130,21 +130,46 @@ export class MovimentoContoController {
     // Ricarcia Telefonica
     public async postRicarica(req: Request, res: Response, next: NextFunction) {
         try {
+            // per il log
+            const ipAddressRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
+
             const email = req.user?.email;
             const { importo, numeroTelefono } = req.body;
 
             if (!importo) {
                 res.status(400).json({ message: 'Importo mancante' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Importo mancante'
+                );
                 return;
             }
 
             if (!numeroTelefono) {
                 res.status(400).json({ message: 'Numero mancante' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Numero mancante'
+                );
                 return;
             }
 
             if (!email) {
                 res.status(400).json({ message: 'Email non trovata' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Email non trovata'
+                );
                 return;
             }
 
@@ -152,11 +177,25 @@ export class MovimentoContoController {
 
             if (!contoCorrente) {
                 res.status(400).json({ message: 'Conto Corrente non trovato' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Conto Corrente non trovato'
+                );
                 return;
             }
 
             if (!contoCorrente.id) {
                 res.status(400).json({ message: 'Id del conto corrente non trovato' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Id del conto corrente non trovato'
+                );
                 return;
             }
 
@@ -164,6 +203,13 @@ export class MovimentoContoController {
 
             if (!lastMovimento) {
                 res.status(400).json({ message: 'Ultima operazione non trovata' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Ultima operazione non trovata'
+                );
                 return;
             }
 
@@ -171,12 +217,43 @@ export class MovimentoContoController {
 
             if (!newMovimento) {
                 res.status(400).json({ message: 'Rircari fallita' });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    'Rircari fallita'
+                );
                 return;
             }
 
+            // Log di successo
+            await operationLogSrv.createLog(
+                email,
+                ipAddress,
+                'RICARICA',
+                'SUCCESS',
+                'Password modificata correttamente'
+            );
+
             res.status(201).json(newMovimento);
-        } catch (err) {
-            next(err);
+        } catch (err: any) {
+            // Log di errore
+            const email = req.user?.email;
+            const ipAddressRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
+
+            if (email) {
+                await operationLogSrv.createLog(
+                    email,
+                    ipAddress,
+                    'RICARICA',
+                    'FAILED',
+                    err.message
+                );
+            }
+            res.status(400).json({ message: err.message });
+
         }
     }
 
@@ -297,43 +374,96 @@ export class MovimentoContoController {
     // Bonifico 
     public async postBonificoUscita(req: Request, res: Response, next: NextFunction) {
         try {
+            // per i log
+            const ipAddressRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
+
             const email = req.user?.email;
             const { ibanDestinatario, importo, casuale } = req.body;
 
+            if (!email) {
+                res.status(400).json({ message: "Email non trovata" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Email non trovata"
+                );
+                return;
+            }
+
             if (!ibanDestinatario) {
                 res.status(400).json({ message: "Iban non inserito" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Iban non inserito"
+                );
                 return;
             }
 
             if (!importo) {
                 res.status(400).json({ message: "Importo non inserito" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Importo non inserito"
+                );
                 return;
-            }
-
-            if (!email) {
-                res.status(400).json({ message: "Email non trovata" });
-                return;
-            }
+            }            
 
             const contoCorrenteMittente = await ContoCorrenteSrv.getContoCorrenteByEmail(email);
             const contoCorrenteDestinatario = await ContoCorrenteSrv.getContoCorrenteByIban(ibanDestinatario);
 
             if (!contoCorrenteMittente) {
                 res.status(404).json({ message: "Conto corrente mittente non trovato per l'email specificata" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Conto corrente mittente non trovato per l'email specificata"
+                );
                 return;
             }
 
             if (!contoCorrenteMittente.id) {
                 res.status(404).json({ message: "Conto corrente ID del mittente non trovato" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Conto corrente ID del mittente non trovato"
+                );
                 return;
             }
             if (!contoCorrenteDestinatario) {
                 res.status(404).json({ message: "Conto corrente destinatario non trovato per l'IBAN specificato" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Conto corrente destinatario non trovato per l'IBAN specificato"
+                );
                 return;
             }
 
             if (!contoCorrenteDestinatario.id) {
                 res.status(404).json({ message: "Conto corrente ID del destinatario non trovato" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Conto corrente ID del destinatario non trovato"
+                );
                 return;
             }
 
@@ -342,10 +472,24 @@ export class MovimentoContoController {
 
             if (!lastMovimentoMittente) {
                 res.status(404).json({ message: "Ultimo movimento del mittente non trovato" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Ultimo movimento del mittente non trovato"
+                );
                 return;
             }
             if (!lastMovimentoDestinatario) {
                 res.status(404).json({ message: "Ultimo movimento del destinatario non trovato" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Ultimo movimento del destinatario non trovato"
+                );
                 return;
             }
 
@@ -353,12 +497,42 @@ export class MovimentoContoController {
 
             if (!newMovimento) {
                 res.status(500).json({ message: "Errore nella creazione del movimento" });
+                await operationLogSrv.createLog(
+                    email!,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    "Errore nella creazione del movimento"
+                );
                 return;
             }
 
+            // Log di successo
+            await operationLogSrv.createLog(
+                email,
+                ipAddress,
+                'BONIFICO',
+                'SUCCESS',
+                'Bonifico effettuato con successo'
+            );
+
             res.status(201).json(newMovimento);
-        } catch (err) {
-            next(err);
+        } catch (err: any) {
+            // Log di errore
+            const email = req.user?.email;
+            const ipAddressRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+            const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
+
+            if (email) {
+                await operationLogSrv.createLog(
+                    email,
+                    ipAddress,
+                    'BONIFICO',
+                    'FAILED',
+                    err.message
+                );
+            }
+            res.status(400).json({ message: err.message });
         }
     }
 

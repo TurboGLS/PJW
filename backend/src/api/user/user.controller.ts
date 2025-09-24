@@ -16,21 +16,48 @@ export const modificaPassword = async (
     next: NextFunction
 ) => {
     try {
+        // per i log
+        const ipAddressRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+        const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
+
         const { oldPassword, newPassword } = req.body;
         const email = req.user?.email;
 
         if (!email) {
             res.status(400).json({ message: 'Email non trovata' });
+            await operationLogSrv.createLog(
+                email!,
+                ipAddress,
+                'MODIFICA_PASSWORD',
+                'SUCCESS',
+                'Email non trovata'
+            );
             return;
         }
 
         if (!oldPassword || !newPassword) {
             res.status(400).json({ message: 'Vecchia e nuova password mancanti' });
+            await operationLogSrv.createLog(
+                email!,
+                ipAddress,
+                'MODIFICA_PASSWORD',
+                'SUCCESS',
+                'Vecchia e nuova password mancanti'
+            );
             return;
         }
 
-        const ipAddressRaw = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-        const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
+        // Check se le password sono uguali
+        if (oldPassword === newPassword) {
+            await operationLogSrv.createLog(
+                email,
+                ipAddress,
+                'MODIFICA_PASSWORD',
+                'FAILED',
+                'Vecchia e nuova password non possono essere uguali'
+            );
+            return res.status(400).json({ message: 'Vecchia e nuova password non possono essere uguali' });
+        }
 
         // Log di successo
         await operationLogSrv.createLog(
