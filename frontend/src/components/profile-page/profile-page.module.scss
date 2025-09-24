@@ -1,7 +1,36 @@
 .main-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-  margin-top: 2rem;
+    background-image: url('../../assets/wave-light.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 32px;
+    padding: 25px;
+}
+
+.vertial-line {
+    border-left: 1px solid black;;
+}
+
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    width: 80%;
+    height: 85%;
+}
+
+.profile {
+    display: flex;
+    background-color: white;
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgb(207, 207, 207);
+    box-shadow: 10px 10px 0px #96acc4;
+    width: 85%;
+    height: 70%;
 }

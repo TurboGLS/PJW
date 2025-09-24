@@ -23,9 +23,14 @@ const ProfilePage = () => {
   }
   return (
     <div className={s["main-container"]}>
-      <h1>IL TUO PROFILO</h1>
-      <BankAccountInfos bankaccountInfos={userInfo} />
-      <ModifyPasswords />
+      <div className={s["title"]}>IL TUO PROFILO</div>
+      <div className={s["profile-container"]}>
+        <div className={s["profile"]}>
+          <BankAccountInfos bankaccountInfos={userInfo} />
+          <hr className={s["vertical-line"]} />
+          <ModifyPasswords />
+        </div>
+      </div>
     </div>
   );
 };

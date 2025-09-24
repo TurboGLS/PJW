@@ -7,12 +7,34 @@ interface BankAccountInfosProps {
 }
 
 const BankAccountInfos = ({ bankaccountInfos }: BankAccountInfosProps) => {
+  const date = bankaccountInfos.dataApertura.toString().slice(0, 10);
+
   return (
     <div className={s["main-container"]}>
-      <div>{bankaccountInfos.nomeTitolare}</div>
-      <div>{bankaccountInfos.cognomeTitolare}</div>
-      <div>{bankaccountInfos.email}</div>
-      <div>{bankaccountInfos.iban}</div>
+      <img className={s["profile-picture"]} src="https://cdn-icons-png.freepik.com/256/12225/12225881.png?semt=ais_white_label"/>
+      <div className={s["profile-container"]}>
+        <div>
+          <div>
+            <div className={s["label-title"]}>Nome Titolare</div>
+            <label className={s["val"]}>{bankaccountInfos.nomeTitolare} {bankaccountInfos.cognomeTitolare}</label>
+          </div>
+        </div>
+        <div>
+          <div className={s["label-title"]}>Email</div>
+          <label className={s["val"]}>{bankaccountInfos.email}</label>
+        </div>
+        <div>
+          <div className={s["label-title"]}>Data Creazione Account</div>
+          <label className={s["val"]}>{date}</label>
+        </div>
+        <div>
+          <div className={s["label-title"]}>IBAN</div>
+          <div className={s["iban"]}>
+            <label className={s["val"]}>{bankaccountInfos.iban}</label>
+            <button onClick={() => navigator.clipboard.writeText(bankaccountInfos.iban)}>Copia</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

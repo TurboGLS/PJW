@@ -11,7 +11,9 @@ const TotalBalance = ({ totalBalance, bankAccount }: TotalBalanceProps) => {
   return (
     <div className={s["main-container"]}>
       <div className={s["main-container__balance"]}>
-        <h3>Ciao, {bankAccount.nomeTitolare}</h3>
+        <h3>
+          Benvenuto, {bankAccount.nomeTitolare} {bankAccount.cognomeTitolare}
+        </h3>
         <h2>{totalBalance.lastSaldo.saldo}$</h2>
       </div>
     </div>

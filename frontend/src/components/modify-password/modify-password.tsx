@@ -1,11 +1,12 @@
 import { useState } from "react";
 import profileService from "../../services/profile.service";
+import s from "./modify-password.module.scss"
 
 const ModifyPasswords = () => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [response, setResponse] = useState("");
+
   const modifyPassword = async (e: any) => {
     e.preventDefault();
     try {
@@ -13,26 +14,28 @@ const ModifyPasswords = () => {
         oldPassword,
         newPassword
       );
-      setSuccessMessage(response.data.message);
-      alert(successMessage);
+      setResponse(response.data.message);
     } catch (e: any) {
-      setError(e.response.data.message);
-      alert(error);
+      setResponse(e.response.data.message);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={modifyPassword}>
+    <div className={s["main-container"]}>
+      <div className={s["title"]}>Modifica Password</div>
+      <form onSubmit={modifyPassword} className={s["form"]}>
+        <label>Vecchia Password</label>
         <input
           placeholder="Vecchia Password"
           onChange={(e) => setOldPassword(e.target.value)}
-        ></input>
+        />
+        <label>Nuova Password</label>
         <input
           placeholder="Nuova Password"
           onChange={(e) => setNewPassword(e.target.value)}
-        ></input>
-        <button type="submit" onSubmit={modifyPassword}>
+        />
+        { response ? <p className={s["response-msg"]}>{ response }</p> : null }
+        <button type="submit" onSubmit={modifyPassword} className={s["change-password-button"]}>
           Modifica
         </button>
       </form>
