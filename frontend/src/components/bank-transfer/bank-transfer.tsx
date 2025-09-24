@@ -26,28 +26,13 @@ const BankTransfer = () => {
 
   return (
     <div className={s["main-container"]}>
+      <div className={s["title"]}>Invia bonifico</div>
       <div className={s["form-container"]}>
         <div>Invia bonifico</div>
-        <form className={s["form"]} onSubmit={sendWireTransfer}>
-          <input
-            type="number"
-            name="Import"
-            placeholder="Importo"
-            min={0}
-            onChange={(e) => setImporto(Number(e.target.value))}
-          />
-
-          <input
-            type="text"
-            name="IBAN"
-            placeholder="IBAN"
-            onChange={(e) => setIbanDestinatario(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Causale"
-            onChange={(e) => setCausale(e.target.value)}
-          />
+        <form className={s["form"]}>
+          <input type="number" name="Import" placeholder='Importo' min={0} />
+          <input type="text" name="Cause" placeholder='Causale' />
+          <input type="text" name="IBAN" placeholder='IBAN' />
           <input type="submit" value="Submit" />
         </form>
       </div>
