@@ -256,9 +256,6 @@ export class MovimentoContoService {
         return newMovimento;
     }
 
-
-
-
     // TO FIX
     async bonificoUscita(movimentoDataMittente: movimentoConto, movimentoDataDestinatario: movimentoConto, importo: number) {
 
@@ -266,7 +263,7 @@ export class MovimentoContoService {
         const saldoDestinatario = movimentoDataDestinatario.saldo;
 
         if (importo > saldoDisponibile) {
-            throw new Error('Saldo del utente insubbiciente')
+            throw new Error('Saldo utente insufficiente')
         }
 
         const saldoFinaleMittente = saldoDisponibile - importo;
@@ -288,7 +285,7 @@ export class MovimentoContoService {
             importo: importo,
             saldo: saldoFinaleMittente,
             categoriaMovimentoID: categoriaUscita._id,
-            descrizioneEstesa: 'Bonifico in uscita'
+            descrizioneEstesa: `Bonifico in uscita`
         }
         const movimentoBonificoDestinatario = {
             contoCorrenteID: movimentoDataDestinatario.contoCorrenteID,  
@@ -322,9 +319,7 @@ export class MovimentoContoService {
 
         return bonificoCompleto;
 
-    }
-
-    
+    }   
 }
 
 export default new MovimentoContoService;
