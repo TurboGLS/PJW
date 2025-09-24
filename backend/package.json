@@ -8,7 +8,8 @@
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed:categories": "ts-node ./src/api/category/seedCategories.ts",
-    "seed:phoneOperator": "ts-node ./src/api/phoneOperator/phoneOperator.seed.ts"
+    "seed:phoneOperator": "ts-node ./src/api/phoneOperator/phoneOperator.seed.ts",
+    "heroku-postbuild": "npm install && npm run build"
   },
   "nodemonConfig": {
     "ignore": [
