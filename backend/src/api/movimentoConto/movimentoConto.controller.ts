@@ -379,7 +379,7 @@ export class MovimentoContoController {
             const ipAddress = Array.isArray(ipAddressRaw) ? ipAddressRaw[0] : (ipAddressRaw || 'UNKNOWN');
 
             const email = req.user?.email;
-            const { ibanDestinatario, importo, casuale: causale } = req.body;
+            const { ibanDestinatario, importo, causale: causale } = req.body;
 
             if (!email) {
                 res.status(400).json({ message: "Email non trovata" });
