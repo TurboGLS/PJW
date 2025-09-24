@@ -696,7 +696,10 @@ export class MovimentoContoController {
     try {
       const limit = parseInt(req.query.limit as string);
       const email = req.user?.email;
-      const { dataInizio, dataFine } = req.body;
+      const { dataInizio, dataFine } = req.query as {
+        dataInizio: string;
+        dataFine: string;
+      };
 
       if (!limit || limit <= 0) {
         res.status(400).json("Limite operazioni inserito incorretto");
@@ -760,7 +763,9 @@ export class MovimentoContoController {
 
       if (!lastMovimentiDates || lastMovimentiDates.length === 0) {
         res.status(404).json({
-          message: `Nessuna operazione trovata tra le date ${dataInizio} e ${dataFine}`,
+          message: `Nessuna operazione trovata tra le date ${startDate.toLocaleDateString(
+            "it-IT"
+          )} e ${endDate.toLocaleDateString("it-IT")}`,
         });
         return;
       }
