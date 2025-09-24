@@ -6,6 +6,7 @@ import type { Movements } from "../../entities/movements.entity";
 import { useEffect, useState } from "react";
 import type { Category } from "../../entities/category.entity";
 import movementService from "../../services/movements.service";
+import DatePicker from "react-datepicker";
 
 interface MovementsFiltersProps {
   movements: Movements[];
@@ -14,6 +15,7 @@ interface MovementsFiltersProps {
   onCatChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   categoryName: string;
   categoryType: string;
+  onDateChange: (dataInizio: Date | null, dataFine: Date | null) => void;
 }
 
 const MovementsFilters = ({
@@ -23,9 +25,24 @@ const MovementsFilters = ({
   onCatChange,
   categoryName,
   categoryType,
+  onDateChange,
 }: MovementsFiltersProps) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [dataInizio, setDataInizio] = useState<Date | null>(null);
+  const [dataFine, setDataFine] = useState<Date | null>(null);
+
+  const handleDataInizio = (date: Date | null) => {
+    setDataInizio(date);
+    onDateChange(date, dataFine);
+  };
+
+  const handleDataFine = (date: Date | null) => {
+    setDataFine(date);
+    onDateChange(dataInizio, date);
+  };
+
   const csvData = [
-    ["ID Movimento", "Importo", "Data", "Categoria", "Descrizione"],
+    ["ID Movimento", "Importo", "Saldo", "Categoria", "Descrizione"],
     ...movements!.map((item) => [
       item._id,
       item.importo,
@@ -33,8 +50,6 @@ const MovementsFilters = ({
       item.descrizioneEstesa,
     ]),
   ];
-
-  const [categories, setCategories] = useState<Category[]>([]);
 
   const getAllCategories = async () => {
     const cat = await movementService.getAllcategories();
@@ -83,14 +98,28 @@ const MovementsFilters = ({
               )}
           </select>
         </div>
-        <div className={s["main-container__download"]}>
-          <p>Scarica CSV</p>
-          <button>
-            <CSVLink data={csvData} separator=";" filename="movements.csv">
-              <Icon path={mdiFileExcel} size={1} />
-            </CSVLink>
-          </button>
+        <div className={s["main-container__dates"]}>
+          <DatePicker
+            selected={dataInizio}
+            onChange={handleDataInizio}
+            isClearable
+          />
+          <DatePicker
+            selected={dataFine}
+            onChange={handleDataFine}
+            isClearable
+          />
         </div>
+        {!movements || movements.length === 0 ? null : (
+          <div className={s["main-container__download"]}>
+            <p>Scarica CSV</p>
+            <button>
+              <CSVLink data={csvData} separator=";" filename="movements.csv">
+                <Icon path={mdiFileExcel} size={1} />
+              </CSVLink>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

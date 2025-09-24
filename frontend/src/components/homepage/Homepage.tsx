@@ -13,11 +13,12 @@ const LIMIT = 5;
 
 const homepage = () => {
   const [balance, setBalance] = useState();
-  const [movements, setMovements] = useState<Movements[]>();
+  const [movements, setMovements] = useState<Movements[]>([]);
   const [user, setUser] = useState<BankAccount | null>();
   const [limit, setLimit] = useState(LIMIT);
   const [categoryName, setCategoryName] = useState("");
   const [categoryType, setCategoryType] = useState("");
+  const [error, setError] = useState<string | null>("");
 
   const onLimitChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLimit = parseInt(e.target.value);
@@ -28,15 +29,15 @@ const homepage = () => {
   };
 
   const onCatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-  const [selectedName, selectedType] = e.target.value.split("|");
-  setCategoryName(selectedName);
-  setCategoryType(selectedType);
-  movementService
-    .fetchMovementsByCat(limit, selectedName, selectedType)
-    .then((response) => {
-      setMovements(response.data.movimenti);
-    });
-};
+    const [selectedName, selectedType] = e.target.value.split("|");
+    setCategoryName(selectedName);
+    setCategoryType(selectedType);
+    movementService
+      .fetchMovementsByCat(limit, selectedName, selectedType)
+      .then((response) => {
+        setMovements(response.data);
+      });
+  };
 
   const fetchUserInfo = async () => {
     const userInfo = await bankAccountService.fetchBankAccountInfo();
@@ -53,11 +54,29 @@ const homepage = () => {
     console.log(movements);
   };
 
+  const fetchMovementsFromDates = async (
+    dataInizio: Date | null,
+    dataFine: Date | null
+  ) => {
+    setError("");
+    if (!dataFine || !dataInizio) {
+      fetchMovements();
+      return;
+    }
+    const response = await movementService.fetchMovementsByDates(
+      limit,
+      dataInizio,
+      dataFine
+    );
+    setError(response.error ?? null);
+    setMovements(response.data);
+  };
+
   useEffect(() => {
     fetchTotalBalance();
     fetchMovements();
     fetchUserInfo();
-  }, [TotalBalance, categoryName]);
+  }, [TotalBalance]);
 
   if (!movements || !balance || !user) {
     return;
@@ -79,8 +98,13 @@ const homepage = () => {
           onCatChange={onCatChange}
           categoryName={categoryName}
           categoryType={categoryType}
+          onDateChange={fetchMovementsFromDates}
         ></MovementsFilters>
-        <MovementsList movements={movements}></MovementsList>
+        {error ? (
+          <p>{error}</p>
+        ) : (
+          <MovementsList movements={movements}></MovementsList>
+        )}
       </div>
     </div>
   );
