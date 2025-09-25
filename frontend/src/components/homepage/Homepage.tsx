@@ -28,15 +28,17 @@ const homepage = () => {
     });
   };
 
-  const onCatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const onCatChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const [selectedName, selectedType] = e.target.value.split("|");
     setCategoryName(selectedName);
     setCategoryType(selectedType);
-    movementService
-      .fetchMovementsByCat(limit, selectedName, selectedType)
-      .then((response) => {
-        setMovements(response.data);
-      });
+    const response = await movementService.fetchMovementsByCat(
+      limit,
+      selectedName,
+      selectedType
+    );
+    setMovements(response.data);
+    setError(response.error ?? null);
   };
 
   const fetchUserInfo = async () => {
