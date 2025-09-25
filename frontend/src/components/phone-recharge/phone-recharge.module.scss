@@ -1,8 +1,14 @@
 .main-container {
     height: 100vh;
-    background-image: url(../../assets/wave-light.svg);
+    background-image: url("../../assets/wave-light.svg");
     background-size: cover;
     background-repeat: no-repeat;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 30px;
+    padding: 25px;
 }
 
 .form-container {
@@ -13,12 +19,6 @@
     margin: auto;
     width: 100%;
     height: 80%;
-}
-
-.title {
-    font-weight: 600;
-    font-size: 30px;
-    padding: 25px;
 }
 
 .form {
@@ -37,7 +37,7 @@
         margin-bottom: 5px;
     }
 
-    input {
+    input, select {
         font-size: 18px;
         padding: 5px;
         margin-bottom: 10px;

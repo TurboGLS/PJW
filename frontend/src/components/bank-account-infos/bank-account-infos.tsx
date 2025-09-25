@@ -4,9 +4,10 @@ import s from "./bank-account-infos.module.scss";
 
 interface BankAccountInfosProps {
   bankaccountInfos: BankAccount;
+  logout: () => void;
 }
 
-const BankAccountInfos = ({ bankaccountInfos }: BankAccountInfosProps) => {
+const BankAccountInfos = ({ bankaccountInfos, logout }: BankAccountInfosProps) => {
   const date = bankaccountInfos.dataApertura.toString().slice(0, 10);
 
   return (
@@ -33,6 +34,9 @@ const BankAccountInfos = ({ bankaccountInfos }: BankAccountInfosProps) => {
             <label className={s["val"]}>{bankaccountInfos.iban}</label>
             <button onClick={() => navigator.clipboard.writeText(bankaccountInfos.iban)}>Copia</button>
           </div>
+        </div>
+        <div className={s["logout-container"]}>
+          <button onClick={logout} className={s["logout-button"]}>Logout</button>
         </div>
       </div>
     </div>

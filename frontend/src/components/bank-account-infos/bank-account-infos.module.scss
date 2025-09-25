@@ -52,3 +52,28 @@
     border-radius: 10px;
     padding: 4px 6px;
 }
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+}
+
+.logout-button {
+    font-weight: 600;
+    background-color: rgb(77,86,128);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    transition: background-color 200ms;
+}
+
+.logout-button:hover {
+    background-color: rgb(90, 101, 150);
+    transition: all 200ms
+}
+
+.logout-button:active {
+    background-color: rgb(60, 67, 100);
+}
