@@ -24,40 +24,49 @@ export class MissingCredentialsError extends Error {
 
 export class UserService {
     async add(user: User, credentials: { username: string, password: string }): Promise<User> {
-        if (!credentials.username || !credentials.password) {
-            throw new MissingCredentialsError();
-        }
-
-        const existingEmail = await UserModel.findOne({ email: user.email });
-        if (existingEmail) {
-            throw new EmailExistsError();
-        }
-
-        const newUser = await UserModel.create(user);
-
-        // Genero il token di verifica email
-        const verificationToken = jwt.sign({ userId: newUser.id, email: newUser.email }, JWT_EMAIL_SECRET, { expiresIn: '1d' });
-
-        // salva la scadenza: 24 ore da ora
-        newUser.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000);
-
-        // Salvo il token nella proprietà dell'utente (aggiungi 'verificationToken' nel modello User se non c'è)
-        newUser.verificationToken = verificationToken;
-        await newUser.save();
-
-        const hashedPassword = await bcrypt.hash(credentials.password, 10);
-
-        await UserIdentityModel.create({
-            provider: 'local',
-            user: newUser.id,
-            credentials: {
-                username: credentials.username,
-                hashedPassword
-            }
-        });
-
-        return newUser;
+    if (!credentials.username || !credentials.password) {
+        throw new MissingCredentialsError();
     }
+
+    const existingEmail = await UserModel.findOne({ email: user.email });
+    if (existingEmail) {
+        throw new EmailExistsError();
+    }
+
+    // Creo l'utente nel DB
+    const newUser = await UserModel.create({
+        ...user,
+        active: false, // inizialmente inattivo
+    });
+
+    // Genero il token JWT per la verifica email
+    const verificationToken = jwt.sign(
+        { userId: newUser.id, email: newUser.email },
+        JWT_EMAIL_SECRET,
+        { expiresIn: '1d' } // 24h di validità
+    );
+
+    // Salvo token e scadenza nel documento utente
+    newUser.verificationToken = verificationToken;
+    newUser.verificationTokenExpires = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 ore da ora
+    await newUser.save();
+
+    // Genero hash della password
+    const hashedPassword = await bcrypt.hash(credentials.password, 10);
+
+    // Creo l'identità locale
+    await UserIdentityModel.create({
+        provider: 'local',
+        user: newUser.id,
+        credentials: {
+            username: credentials.username,
+            hashedPassword
+        }
+    });
+
+    return newUser;
+}
+
 
     async getById(userId: string): Promise<User | null> {
         const user = await UserModel.findById(userId);

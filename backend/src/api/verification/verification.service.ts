@@ -9,8 +9,10 @@ export async function verifyEmailToken(token: string) {
         return null;
     }
 
+    const now = new Date();
+
     // Controllo qui la scadenza del token
-    if (!user.verificationTokenExpires || user.verificationTokenExpires < new Date()) {
+    if (!user.verificationTokenExpires || user.verificationTokenExpires < now) {
         // Cancella utente da users
         await UserModel.deleteOne({ _id: user._id });
 
