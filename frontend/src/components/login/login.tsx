@@ -1,15 +1,27 @@
 import s from "./login.module.scss";
 import logo from "../../assets/intesa-mario-volpato-trasparent.png";
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/auth.context";
 
-const login = () => {
+const Login = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { login } = useAuth();
+
+  useEffect(() => {
+    if (username || password) {
+      const timer = setTimeout(() => {
+        setUsername("");
+        setPassword("");
+        setError("");
+      }, 30000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [username, password]);
 
   const redirectToRegister = () => {
     navigate("/register");
@@ -32,7 +44,7 @@ const login = () => {
           <div className={s["main-title"]}>Login</div>
           <div className={s["register-button"]} onClick={redirectToRegister}>
             If you don't have an account, Click here
-            <hr></hr>
+            <hr />
           </div>
           <form onSubmit={handleLogin} className={s["form-container"]}>
             <input
@@ -40,6 +52,7 @@ const login = () => {
               type="email"
               name="Email"
               placeholder="Email"
+              value={username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <input
@@ -47,16 +60,17 @@ const login = () => {
               type="password"
               name="Password"
               placeholder="Password"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             {error ? <p>{error}</p> : null}
             <input className={s["login-button"]} type="submit" value="Login" />
           </form>
         </div>
-        <img className={s["image"]} src={logo} alt="Logo"></img>
+        <img className={s["image"]} src={logo} alt="Logo" />
       </div>
     </div>
   );
 };
 
-export default login;
+export default Login;
