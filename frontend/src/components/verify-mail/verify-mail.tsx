@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { verifyEmail } from "../../services/verify-mail.service";
+import s from "./verify-mail.module.scss";
 
 function VerifyEmail({ staticMode = false }) {
   const [searchParams] = useSearchParams();
@@ -32,8 +33,10 @@ function VerifyEmail({ staticMode = false }) {
   }, [searchParams, staticMode]);
 
   return (
-    <div className="verify-email">
-      <p>{message}</p>
+    <div className={s["main-container"]}>
+      <div className={s["main-container__message-box"]}>
+        <h1>{message}</h1>
+      </div>
     </div>
   );
 }
