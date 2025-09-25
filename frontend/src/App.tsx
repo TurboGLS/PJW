@@ -10,15 +10,14 @@ import ProfilePage from "./components/profile-page/profile-page";
 import PhoneRecharge from "./components/phone-recharge/phone-recharge";
 import Sidebar from "./components/sidebar/sidebar";
 import BankTransfer from "./components/bank-transfer/bank-transfer";
+import VerifyMail from "./components/verify-mail/verify-mail";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="main-layout">
     <div className="sidebar">
       <Sidebar />
     </div>
-    <div className="content">
-      {children}
-    </div>
+    <div className="content">{children}</div>
   </div>
 );
 
@@ -45,6 +44,10 @@ const router = createBrowserRouter([
             <Register />
           </IsLoggedGuard>
         ),
+      },
+      {
+        path: `/verify-email`,
+        element: <VerifyMail />,
       },
       {
         path: "/homepage",

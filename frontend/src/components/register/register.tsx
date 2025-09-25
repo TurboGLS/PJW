@@ -14,7 +14,7 @@ const register = () => {
   const [error, setError] = useState<String>("");
 
   const redirectToLogin = () => {
-    navigate("/login");
+    navigate("/verify-mail");
   };
 
   const register = async (e: any) => {
