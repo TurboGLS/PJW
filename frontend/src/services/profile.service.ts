@@ -3,7 +3,7 @@ import { authAxiosInstance } from "../lib/axios";
 class ProfileService {
   async changePassword(oldPassword: String, newPassword: string) {
     const response = await authAxiosInstance.patch(
-      "api/user/modifica-password",
+      "https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/user/modifica-password",
       {
         oldPassword,
         newPassword,

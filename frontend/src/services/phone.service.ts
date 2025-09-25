@@ -5,7 +5,7 @@ class PhoneService {
   async phoneRecharge(importo: number, numeroTelefono: Value | undefined) {
     try {
       const pRecharge = authAxiosInstance.post(
-        "/api/movimentoConto/ricarica-telefono",
+        "https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/movimentoConto/ricarica-telefono",
         { importo, numeroTelefono }
       );
       return pRecharge;
@@ -17,7 +17,7 @@ class PhoneService {
   async getPhoneOperators() {
     try {
       const operators = authAxiosInstance.get(
-        "/api/phoneOperators/allOperators"
+        "https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/phoneOperators/allOperators"
       );
       return operators;
     } catch (e: any) {

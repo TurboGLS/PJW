@@ -5,7 +5,7 @@ import type { Movements } from "../entities/movements.entity";
 class MovementService {
   async fetchLimitedMovements(limit: number = 5) {
     const response = await authAxiosInstance.get(
-      `/api/movimentoConto/limited?limit=${limit}`
+      `https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/movimentoConto/limited?limit=${limit}`
     );
     return response;
   }
@@ -16,7 +16,7 @@ class MovementService {
     causale: string
   ) {
     const response = await authAxiosInstance.post(
-      "/api/movimentoConto/bonifico-uscita",
+      "https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/movimentoConto/bonifico-uscita",
       { importo, ibanDestinatario, causale }
     );
     return response;
@@ -24,7 +24,7 @@ class MovementService {
 
   async getAllcategories() {
     const response = await authAxiosInstance.get(
-      `/api/categoryTypes/allCategory`
+      `https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/categoryTypes/allCategory`
     );
     return response;
   }
@@ -36,7 +36,7 @@ class MovementService {
   ): Promise<{ data: Movements[]; error: string | null }> {
     try {
       const response = await authAxiosInstance.get(
-        `/api/movimentoConto/by-categoria?limit=${limit}&categoryName=${categoryName}&categoryType=${categoryType}`
+        `https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/movimentoConto/by-categoria?limit=${limit}&categoryName=${categoryName}&categoryType=${categoryType}`
       );
       return { data: response.data, error: null };
     } catch (error) {
@@ -62,7 +62,7 @@ class MovementService {
 
     try {
       const response = await authAxiosInstance.get(
-        `/api/movimentoConto/movimenti-between-dates?${params.toString()}`
+        `https://left-tallou-itsmariovolpato-ffbe3dd4.koyeb.app/api/movimentoConto/movimenti-between-dates?${params.toString()}`
       );
       return { data: response.data, error: null };
     } catch (error) {

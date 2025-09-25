@@ -1,7 +1,7 @@
 import Icon from "@mdi/react";
 import type { Movements } from "../../entities/movements.entity";
 import s from "./movement-card.module.scss";
-import { mdiDotsVertical } from '@mdi/js';
+import { mdiInformationSymbol } from "@mdi/js";
 import { useState } from "react";
 import MovementDialog from "../movement-dialog/movement-dialog";
 
@@ -18,7 +18,7 @@ const MovementCard = ({ movement }: MovementCardProps) => {
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
   };
-  
+
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
@@ -31,7 +31,11 @@ const MovementCard = ({ movement }: MovementCardProps) => {
         <div className={s["data"]}>Data: {dataParseToString}</div>
       </div>
       <div onClick={handleOpenDialog}>
-        <Icon path={mdiDotsVertical} size={1} className={s["dots-icon"]} />
+        <Icon
+          path={mdiInformationSymbol}
+          size={1.5}
+          className={s["dots-icon"]}
+        />
       </div>
 
       {isDialogOpen && (
