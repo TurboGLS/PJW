@@ -67,7 +67,7 @@ const register = () => {
                 onChange={(e) => setSurname(e.target.value)}
               />
               <input
-                placeholder="Username"
+                placeholder="Email"
                 onChange={(e) => setUsername(e.target.value)}
               />
               <input
