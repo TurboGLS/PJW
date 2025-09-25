@@ -32,13 +32,23 @@ const MovementsFilters = ({
   const [dataFine, setDataFine] = useState<Date | null>(null);
 
   const handleDataInizio = (date: Date | null) => {
-    setDataInizio(date);
-    onDateChange(date, dataFine);
+    setDataInizio(date); // qui salvo la data originale selezionata
+    const corrected = date ? new Date(date) : null;
+    if (corrected) corrected.setDate(corrected.getDate() + 1); // solo per il backend
+    onDateChange(
+      corrected,
+      dataFine ? new Date(dataFine.getTime() + 24 * 60 * 60 * 1000) : null
+    );
   };
 
   const handleDataFine = (date: Date | null) => {
-    setDataFine(date);
-    onDateChange(dataInizio, date);
+    setDataFine(date); // qui salvo la data originale selezionata
+    const corrected = date ? new Date(date) : null;
+    if (corrected) corrected.setDate(corrected.getDate() + 1);
+    onDateChange(
+      dataInizio ? new Date(dataInizio.getTime() + 24 * 60 * 60 * 1000) : null,
+      corrected
+    );
   };
 
   const csvData = [
