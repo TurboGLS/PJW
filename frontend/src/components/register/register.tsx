@@ -30,6 +30,7 @@ const register = () => {
         password
       );
       navigate("/login");
+      console.log(user);
     } catch (e: any) {
       setLoading(false);
       setError(e.response.data.message);
