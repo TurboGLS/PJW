@@ -542,6 +542,22 @@ export class MovimentoContoController {
       const contoCorrenteDestinatario =
         await ContoCorrenteSrv.getContoCorrenteByIban(ibanDestinatario);
 
+      // Check: bonifico a se stessi
+      if (contoCorrenteMittente && contoCorrenteDestinatario &&
+        contoCorrenteMittente.iban === contoCorrenteDestinatario.iban) {
+        res.status(400).json({
+          message: "Non puoi effettuare un bonifico al tuo stesso IBAN",
+        });
+        await operationLogSrv.createLog(
+          email!,
+          ipAddress,
+          "BONIFICO",
+          "FAILED",
+          "Tentativo di bonifico al proprio IBAN"
+        );
+        return;
+      }
+
       if (!contoCorrenteMittente) {
         res.status(404).json({
           message:
