@@ -21,7 +21,6 @@ const BankTransfer = () => {
       navigate("/homepage");
     } catch (e: any) {
       setError(e.response.data.message)
-      console.log(e);
     }
   };
 

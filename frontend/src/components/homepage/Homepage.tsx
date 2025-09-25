@@ -53,7 +53,6 @@ const homepage = () => {
   const fetchMovements = async () => {
     const response = await movementService.fetchLimitedMovements();
     setMovements(response.data.movimenti);
-    console.log(movements);
   };
 
   const fetchMovementsFromDates = async (

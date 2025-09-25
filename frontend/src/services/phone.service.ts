@@ -10,9 +10,6 @@ class PhoneService {
       );
       return pRecharge;
     } catch (e: any) {
-      console.log(
-        "There was an error at pRecharge in PhoneService " + e.error.message
-      );
       return e;
     }
   }
@@ -24,10 +21,6 @@ class PhoneService {
       );
       return operators;
     } catch (e: any) {
-      console.log(
-        "There was an error at getPhoneOperators in PhoneService " +
-          e.error.message
-      );
       return e;
     }
   }

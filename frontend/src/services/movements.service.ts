@@ -41,7 +41,6 @@ class MovementService {
       return { data: response.data, error: null };
     } catch (error) {
       if (error && error instanceof AxiosError && error.status === 404) {
-        console.log(error);
         return { data: [], error: error.response?.data?.message };
       }
       throw error;
@@ -68,7 +67,6 @@ class MovementService {
       return { data: response.data, error: null };
     } catch (error) {
       if (error && error instanceof AxiosError && error.status === 404) {
-        console.log(error);
         return { data: [], error: error.response?.data?.message };
       }
       throw error;
