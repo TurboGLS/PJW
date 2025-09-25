@@ -107,7 +107,7 @@ export class MovimentoContoService {
     }
 
     // Funzione Apertura Conto FUNZIONA
-    async aperturaConto(contoCorrenteId: mongoose.ObjectId, importoIniziale = 500) {
+    async aperturaConto(contoCorrenteId: mongoose.ObjectId, importoIniziale = 0) {
         const contoCorrente = await contoCorrenteModel.findById(contoCorrenteId);
 
         if (!contoCorrente) {
