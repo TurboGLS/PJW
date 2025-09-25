@@ -73,7 +73,11 @@ const MovementsFilters = ({
       <div className={s["main-container"]}>
         <div className={s["filter-group"]}>
           <label className={s["filter-label"]}>N. Movimenti</label>
-          <select className={s["filter-select"]} value={limit} onChange={onChange}>
+          <select
+            className={s["filter-select"]}
+            value={limit}
+            onChange={onChange}
+          >
             <option value="20">20</option>
             <option value="15">15</option>
             <option value="10">10</option>
@@ -124,7 +128,12 @@ const MovementsFilters = ({
           <div className={s["filter-group"]}>
             <label className={s["filter-label"]}>Scarica CSV</label>
             <button className={s["download-btn"]}>
-              <CSVLink data={csvData} separator=";" filename="movements.csv" className={s["csv-link"]}>
+              <CSVLink
+                data={csvData}
+                separator=";"
+                filename="movements.csv"
+                className={s["csv-link"]}
+              >
                 <Icon path={mdiFileExcel} size={1} />
               </CSVLink>
             </button>

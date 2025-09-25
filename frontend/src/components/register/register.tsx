@@ -3,7 +3,7 @@ import BankLogo from "../../assets/intesa-mario-volpato-trasparent.png";
 import authService from "../../services/auth.service";
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import loaderGif from "../../assets/loading.gif";
+import loaderGif from "../../assets/1474.gif";
 
 const register = () => {
   const navigate = useNavigate();

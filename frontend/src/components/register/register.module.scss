@@ -99,8 +99,7 @@
 .loader {
   display: flex;
   position: fixed;
-  background-color: rgba(0, 0, 0, 0.25);
-  color: black;
+  background-color: white;
   top: 0;
   right: 0;
   bottom: 0;
@@ -108,8 +107,4 @@
   z-index: 99;
   align-items: center;
   justify-content: center;
-
-  img {
-    background-color: transparent;
-  }
 }
