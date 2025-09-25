@@ -71,17 +71,19 @@ const MovementsFilters = ({
   return (
     <div>
       <div className={s["main-container"]}>
-        <div className={s["main-container__limit"]}>
-          <p>N. Movimenti</p>
-          <select value={limit} onChange={onChange}>
+        <div className={s["filter-group"]}>
+          <label className={s["filter-label"]}>N. Movimenti</label>
+          <select className={s["filter-select"]} value={limit} onChange={onChange}>
             <option value="20">20</option>
             <option value="15">15</option>
             <option value="10">10</option>
             <option value="5">5</option>
           </select>
         </div>
-        <div className={s["main-container__category"]}>
+        <div className={s["filter-group"]}>
+          <label className={s["filter-label"]}>Categoria</label>
           <select
+            className={s["filter-select"]}
             onChange={onCatChange}
             value={categoryName + "|" + categoryType}
           >
@@ -98,23 +100,31 @@ const MovementsFilters = ({
               )}
           </select>
         </div>
-        <div className={s["main-container__dates"]}>
+        <div className={s["filter-group"]}>
+          <label className={s["filter-label"]}>Data inizio</label>
           <DatePicker
+            className={s["filter-datepicker"]}
             selected={dataInizio}
             onChange={handleDataInizio}
             isClearable
+            placeholderText="Dal"
           />
+        </div>
+        <div className={s["filter-group"]}>
+          <label className={s["filter-label"]}>Data fine</label>
           <DatePicker
+            className={s["filter-datepicker"]}
             selected={dataFine}
             onChange={handleDataFine}
             isClearable
+            placeholderText="Al"
           />
         </div>
         {!movements || movements.length === 0 ? null : (
-          <div className={s["main-container__download"]}>
-            <p>Scarica CSV</p>
-            <button>
-              <CSVLink data={csvData} separator=";" filename="movements.csv">
+          <div className={s["filter-group"]}>
+            <label className={s["filter-label"]}>Scarica CSV</label>
+            <button className={s["download-btn"]}>
+              <CSVLink data={csvData} separator=";" filename="movements.csv" className={s["csv-link"]}>
                 <Icon path={mdiFileExcel} size={1} />
               </CSVLink>
             </button>

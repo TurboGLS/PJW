@@ -17,7 +17,7 @@ const BankAccountInfos = ({ bankaccountInfos, logout }: BankAccountInfosProps) =
         <div>
           <div>
             <div className={s["label-title"]}>Nome Titolare</div>
-            <label className={s["val"]}>{bankaccountInfos.nomeTitolare} {bankaccountInfos.cognomeTitolare}</label>
+            <label style={{textTransform: "capitalize"}} className={s["val"]}>{bankaccountInfos.nomeTitolare} {bankaccountInfos.cognomeTitolare}</label>
           </div>
         </div>
         <div>

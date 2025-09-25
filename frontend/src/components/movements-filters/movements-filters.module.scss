@@ -1,33 +1,75 @@
 .main-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  background-color: white;
-  padding: 1rem;
-  border-radius: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    border-radius: 20px;
+    padding: 30px 40px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
 
-  &__limit{
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 140px;
+}
+
+.filter-label {
+    color: rgb(77,86,128);
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.filter-select,
+.filter-datepicker {
+    width: 180px;
+    height: 38px;
+    border-radius: 18px;
+    border: 2px solid rgb(207, 207, 207);
+    padding: 0 14px;
+    background: #fff;
+    font-size: 15px;
+    color: rgb(77,86,128);
+    transition: border-color 0.2s;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.filter-select:focus,
+.filter-datepicker:focus {
+    border-color: rgb(109, 120, 170);
+}
+
+.download-btn {
+    background: rgb(77,86,128);
+    border: none;
+    border-radius: 18px;
+    padding: 8px 18px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    width: 180px;
+    height: 38px;
+    box-sizing: border-box;
+}
 
-    select {
-      border: none;
-      background-color: white;
-      padding: 0.2rem;
-      border-radius: 5px;
-    }
-  }
+.download-btn:hover {
+    background: rgb(90, 101, 150);
+}
 
-  &__download {
+.csv-link {
+    color: inherit;
+    text-decoration: none;
     display: flex;
     align-items: center;
+    width: 100%;
+    height: 100%;
     justify-content: center;
-    button {
-      border: none;
-      background-color: white;
-    }
-  }
 }
