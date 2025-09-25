@@ -60,6 +60,8 @@ const MovementsFilters = ({
     }
   };
 
+  const nowDate = new Date();
+
   useEffect(() => {
     getAllCategories();
   }, []);
@@ -114,16 +116,18 @@ const MovementsFilters = ({
             placeholderText="Dal"
           />
         </div>
-        <div className={s["filter-group"]}>
-          <label className={s["filter-label"]}>Data fine</label>
-          <DatePicker
-            className={s["filter-datepicker"]}
-            selected={dataFine}
-            onChange={handleDataFine}
-            isClearable
-            placeholderText="Al"
-          />
-        </div>
+        {nowDate.toDateString() !== dataInizio?.toDateString() ? (
+          <div className={s["filter-group"]}>
+            <label className={s["filter-label"]}>Data fine</label>
+            <DatePicker
+              className={s["filter-datepicker"]}
+              selected={dataFine}
+              onChange={handleDataFine}
+              isClearable
+              placeholderText="Al"
+            />
+          </div>
+        ) : null}
         {!movements || movements.length === 0 ? null : (
           <div className={s["filter-group"]}>
             <label className={s["filter-label"]}>Scarica CSV</label>

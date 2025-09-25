@@ -64,6 +64,7 @@ const homepage = () => {
       fetchMovements();
       return;
     }
+
     const response = await movementService.fetchMovementsByDates(
       limit,
       dataInizio,
