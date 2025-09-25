@@ -84,27 +84,28 @@ const homepage = () => {
 
   return (
     <div className={s["main-container"]}>
-      <div className={s["main-container__home"]}>
-        <div className={s["main-container__home__infos"]}>
+      <div className={s["title"]}>Dashboard</div>
+      <div className={s["content"]}>
+        <div className={s["info-area"]}>
           <TotalBalance
             totalBalance={balance}
             bankAccount={user}
           ></TotalBalance>
+          <MovementsFilters
+            movements={movements}
+            limit={limit}
+            onChange={onLimitChange}
+            onCatChange={onCatChange}
+            categoryName={categoryName}
+            categoryType={categoryType}
+            onDateChange={fetchMovementsFromDates}
+          ></MovementsFilters>
+          {error ? (
+            <p>{error}</p>
+          ) : (
+            <MovementsList movements={movements}></MovementsList>
+          )}
         </div>
-        <MovementsFilters
-          movements={movements}
-          limit={limit}
-          onChange={onLimitChange}
-          onCatChange={onCatChange}
-          categoryName={categoryName}
-          categoryType={categoryType}
-          onDateChange={fetchMovementsFromDates}
-        ></MovementsFilters>
-        {error ? (
-          <p>{error}</p>
-        ) : (
-          <MovementsList movements={movements}></MovementsList>
-        )}
       </div>
     </div>
   );

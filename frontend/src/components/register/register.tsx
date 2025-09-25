@@ -3,6 +3,7 @@ import BankLogo from "../../assets/intesa-mario-volpato-trasparent.png";
 import authService from "../../services/auth.service";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import loaderGif from "../../assets/loading.gif";
 
 const register = () => {
   const navigate = useNavigate();
@@ -12,14 +13,16 @@ const register = () => {
   const [password, setPassword] = useState<String>("");
   const [repeatedPassword, setRepeatedPassword] = useState<String>("");
   const [error, setError] = useState<String>("");
+  const [isloading, setLoading] = useState(false);
 
   const redirectToLogin = () => {
-    navigate("/verify-mail");
+    navigate("/login");
   };
 
   const register = async (e: any) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const user = await authService.register(
         name,
         surname,
@@ -28,62 +31,74 @@ const register = () => {
       );
       navigate("/login");
     } catch (e: any) {
+      setLoading(false);
       setError(e.response.data.message);
     }
   };
 
   return (
-    <div className={s["main-container"]}>
-      <div className={s["main-container__register-container"]}>
-        <div className={s["main-container__register-container-left"]}>
-          <div className={s["main-container__register-container-infos"]}>
-            <h1>Sign-Up</h1>
-            <div className={s["register-button"]} onClick={redirectToLogin}>
-              Already a client? Click here!
-              <hr></hr>
+    <div>
+      {isloading ? (
+        <div className={s["loader"]}>
+          <img src={loaderGif}></img>
+        </div>
+      ) : null}
+      <div className={s["main-container"]}>
+        <div className={s["main-container__register-container"]}>
+          <div className={s["main-container__register-container-left"]}>
+            <div className={s["main-container__register-container-infos"]}>
+              <h1>Sign-Up</h1>
+              <div className={s["register-button"]} onClick={redirectToLogin}>
+                Already a client? Click here!
+                <hr></hr>
+              </div>
             </div>
-          </div>
-          <form
-            className={s["main-container__register-container-form"]}
-            onSubmit={register}
-          >
-            <input
-              placeholder="Name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <input
-              placeholder="Surname"
-              onChange={(e) => setSurname(e.target.value)}
-            />
-            <input
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <input
-              placeholder="Repeat Password"
-              onChange={(e) => setRepeatedPassword(e.target.value)}
-            />
-            {password !== repeatedPassword ? (
-              <>
-                <p>Passwords are not the same</p>
-                <button type="submit" disabled>
+            <form
+              className={s["main-container__register-container-form"]}
+              onSubmit={register}
+            >
+              <input
+                placeholder="Name"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <input
+                placeholder="Surname"
+                onChange={(e) => setSurname(e.target.value)}
+              />
+              <input
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <input
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <input
+                placeholder="Repeat Password"
+                onChange={(e) => setRepeatedPassword(e.target.value)}
+              />
+              {password !== repeatedPassword ? (
+                <>
+                  <p>Passwords are not the same</p>
+                  <button type="submit" disabled>
+                    Sign In
+                  </button>
+                </>
+              ) : (
+                <button
+                  type="submit"
+                  onSubmit={register}
+                  disabled={isloading === true}
+                >
                   Sign In
                 </button>
-              </>
-            ) : (
-              <button type="submit" onSubmit={register}>
-                Sign In
-              </button>
-            )}
-            {error ? <p>{error}</p> : null}
-          </form>
-        </div>
-        <div className={s["main-container__register-container-right"]}>
-          <img src={BankLogo}></img>
+              )}
+              {error ? <p>{error}</p> : null}
+            </form>
+          </div>
+          <div className={s["main-container__register-container-right"]}>
+            <img src={BankLogo}></img>
+          </div>
         </div>
       </div>
     </div>

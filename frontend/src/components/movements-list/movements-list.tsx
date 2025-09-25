@@ -9,11 +9,13 @@ interface MovementsListProps {
 const MovementsList = ({ movements }: MovementsListProps) => {
   return (
     <div className={s["main-container"]}>
-      {movements.map((movement) => {
-        return (
-          <MovementCard movement={movement} key={movement._id}></MovementCard>
-        );
-      })}
+      <div className={s["list-container"]}>
+        {movements.map((movement) => (
+          <div className={s["row"]} key={movement._id}>
+            <MovementCard movement={movement} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,0 +1,16 @@
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-image: url("../../assets/layered-waves-haikei\ \(1\).svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  &__message_box {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+}

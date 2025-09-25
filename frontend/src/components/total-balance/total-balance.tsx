@@ -9,13 +9,9 @@ interface TotalBalanceProps {
 
 const TotalBalance = ({ totalBalance, bankAccount }: TotalBalanceProps) => {
   return (
-    <div className={s["main-container"]}>
-      <div className={s["main-container__balance"]}>
-        <h3>
-          Benvenuto, {bankAccount.nomeTitolare} {bankAccount.cognomeTitolare}
-        </h3>
-        <h2>{totalBalance.lastSaldo.saldo}$</h2>
-      </div>
+    <div className={s["profile-area"]}>
+      <div className={s["profile-name"]}>Benvenuto, <label>{bankAccount.nomeTitolare} {bankAccount.cognomeTitolare}</label></div>
+      <div className={s["profile-money"]}>${totalBalance.lastSaldo.saldo}</div>
     </div>
   );
 };
