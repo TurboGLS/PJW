@@ -4,6 +4,7 @@ export type Movements = {
   importo: number;
   categoriaMovimentoID: {
     categoryName: string;
+    categoryType: string;
   };
   descrizioneEstesa: string;
   data: Date;
