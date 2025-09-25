@@ -1,31 +1,31 @@
 .main-container {
-    height: 100vh;
-    background-image: url(../../assets/wave-light.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
+  height: 100vh;
+  background-image: url(../../assets/wave-light.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
 
-    .title {
-        font-weight: 600;
-        font-size: 30px;
-        padding: 25px;
-    }
-    
-    .content {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-    }
+  .title {
+    font-weight: 600;
+    font-size: 30px;
+    padding: 25px;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
 }
 
 .info-area {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    border-radius: 25px;
-    border: 1px solid rgb(207, 207, 207);
-    box-shadow: 10px 10px 0px #96acc4;
-    margin-top: 1rem;
-    background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 50px;
+  border-radius: 25px;
+  border: 1px solid rgb(207, 207, 207);
+  box-shadow: 10px 10px 0px #96acc4;
+  margin-top: 1rem;
+  background-color: white;
 }
