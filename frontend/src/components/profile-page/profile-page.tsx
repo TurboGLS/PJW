@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 
 const ProfilePage = () => {
   const [userInfo, setUserInfo] = useState<BankAccount | null>();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const fetchUserInfo = async () => {
     const user = await bankAccountService.fetchBankAccountInfo();
@@ -19,8 +19,8 @@ const ProfilePage = () => {
 
   const logout = async () => {
     authService.logout();
-    navigate("/login");
-  }
+    navigate("/");
+  };
 
   useEffect(() => {
     fetchUserInfo();
@@ -35,7 +35,7 @@ const ProfilePage = () => {
       <div className={s["title"]}>IL TUO PROFILO</div>
       <div className={s["profile-container"]}>
         <div className={s["profile"]}>
-          <BankAccountInfos bankaccountInfos={userInfo} logout={logout}/>
+          <BankAccountInfos bankaccountInfos={userInfo} logout={logout} />
           <hr className={s["vertical-line"]} />
           <ModifyPasswords />
         </div>
