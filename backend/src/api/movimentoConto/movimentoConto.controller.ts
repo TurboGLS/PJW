@@ -179,7 +179,9 @@ export class MovimentoContoController {
       );
 
       if (!movimenti || movimenti.length === 0) {
-        res.status(200).json([]);
+        res.status(404).json({
+          message: "Nessun movimento trovato per la categoria specificata",
+        });
         return;
       }
 
@@ -543,8 +545,11 @@ export class MovimentoContoController {
         await ContoCorrenteSrv.getContoCorrenteByIban(ibanDestinatario);
 
       // Check: bonifico a se stessi
-      if (contoCorrenteMittente && contoCorrenteDestinatario &&
-        contoCorrenteMittente.iban === contoCorrenteDestinatario.iban) {
+      if (
+        contoCorrenteMittente &&
+        contoCorrenteDestinatario &&
+        contoCorrenteMittente.iban === contoCorrenteDestinatario.iban
+      ) {
         res.status(400).json({
           message: "Non puoi effettuare un bonifico al tuo stesso IBAN",
         });
