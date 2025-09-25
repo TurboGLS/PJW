@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import type { Movements } from "../../entities/movements.entity";
 import s from "./movement-dialog.module.scss";
 
@@ -13,7 +12,7 @@ const MovementDialog = ({ movement, onClose }: MovementDialogProps) => {
   };
 
   let previousBalance: number;
-  if (movement.categoriaMovimentoID.categoryType === 'uscita') {
+  if (movement.categoriaMovimentoID.categoryType.toLowerCase() === 'uscita') {
     previousBalance = movement.saldo + movement.importo;
   } else {
     previousBalance = movement.saldo - movement.importo;
@@ -25,7 +24,7 @@ const MovementDialog = ({ movement, onClose }: MovementDialogProps) => {
     year: 'numeric'
   });
 
-  const isUscita = movement.categoriaMovimentoID.categoryType === 'uscita';
+  const isUscita = movement.categoriaMovimentoID.categoryType.toLowerCase() === 'uscita';
   
   const formatCurrency = (value: number) => {
     return value.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
