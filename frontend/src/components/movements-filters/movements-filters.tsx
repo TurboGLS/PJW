@@ -32,9 +32,9 @@ const MovementsFilters = ({
   const [dataFine, setDataFine] = useState<Date | null>(null);
 
   const handleDataInizio = (date: Date | null) => {
-    setDataInizio(date); // qui salvo la data originale selezionata
+    setDataInizio(date); 
     const corrected = date ? new Date(date) : null;
-    if (corrected) corrected.setDate(corrected.getDate() + 1); // solo per il backend
+    if (corrected) corrected.setDate(corrected.getDate() + 1); 
     onDateChange(
       corrected,
       dataFine ? new Date(dataFine.getTime() + 24 * 60 * 60 * 1000) : null
@@ -42,7 +42,7 @@ const MovementsFilters = ({
   };
 
   const handleDataFine = (date: Date | null) => {
-    setDataFine(date); // qui salvo la data originale selezionata
+    setDataFine(date); 
     const corrected = date ? new Date(date) : null;
     if (corrected) corrected.setDate(corrected.getDate() + 1);
     onDateChange(
