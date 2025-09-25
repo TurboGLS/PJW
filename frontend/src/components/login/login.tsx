@@ -22,7 +22,6 @@ const login = () => {
       navigate("/homepage");
     } catch (e: any) {
       setError(e.response.data.message);
-      // TODO : Error notification
     }
   };
 
