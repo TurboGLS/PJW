@@ -32,9 +32,9 @@ const MovementsFilters = ({
   const [dataFine, setDataFine] = useState<Date | null>(null);
 
   const handleDataInizio = (date: Date | null) => {
-    setDataInizio(date); 
+    setDataInizio(date);
     const corrected = date ? new Date(date) : null;
-    if (corrected) corrected.setDate(corrected.getDate() + 1); 
+    if (corrected) corrected.setDate(corrected.getDate() + 1);
     onDateChange(
       corrected,
       dataFine ? new Date(dataFine.getTime() + 24 * 60 * 60 * 1000) : null
@@ -42,7 +42,7 @@ const MovementsFilters = ({
   };
 
   const handleDataFine = (date: Date | null) => {
-    setDataFine(date); 
+    setDataFine(date);
     const corrected = date ? new Date(date) : null;
     if (corrected) corrected.setDate(corrected.getDate() + 1);
     onDateChange(
@@ -90,6 +90,7 @@ const MovementsFilters = ({
             value={limit}
             onChange={onChange}
           >
+            <option value="1000">Tutti</option>
             <option value="20">20</option>
             <option value="15">15</option>
             <option value="10">10</option>
