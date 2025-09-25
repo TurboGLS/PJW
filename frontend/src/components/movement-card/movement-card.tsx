@@ -8,11 +8,14 @@ interface MovementCardProps {
 }
 
 const MovementCard = ({ movement }: MovementCardProps) => {
+  const dataParse = new Date(movement.data);
+  const dataParseToString = dataParse.toLocaleDateString("it-IT")
   return (
     <div className={s["main-container"]}>
       <div className={s["main-container__wrap"]}>
         <div>{movement.descrizioneEstesa}</div>
         <div>{movement.importo}$</div>
+        <div>Data: {dataParseToString}</div>
       </div>
       <div className={s["main-container__details-button"]}>
         <button>

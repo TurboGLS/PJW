@@ -6,4 +6,5 @@ export type Movements = {
     categoryName: string;
   };
   descrizioneEstesa: string;
+  data: Date;
 };
